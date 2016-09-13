@@ -2,6 +2,7 @@
   "parser": "babel-eslint",
   "plugins": [
     "babel",
+    "import",
   ],
 
   "ecmaFeatures": {
@@ -19,6 +20,10 @@
     "document": false,
     "navigator": false,
     "window": false
+  },
+
+  "settings": {
+    "import/extensions": [".js"]
   },
 
   "rules": {
@@ -189,7 +194,7 @@
     "vars-on-top": 0,
     "wrap-iife": [2, "any"],
     "wrap-regex": 0,
-    "yoda": 0,
+    "yoda": 2,
 
     "babel/block-scoped-var": 0,
     "babel/object-shorthand": 2,
@@ -197,5 +202,19 @@
     "babel/generator-star-spacing": [2, "after"],
     "babel/new-cap": [2, { "newIsCap": true, "capIsNew": false }],
     "babel/space-in-brackets": 0,
+
+    "import/export": 2,
+    "import/extensions": [2, {
+      "js": "never",
+      "json": "always",
+      "jsx": "never"
+    }],
+    "import/imports-first": 2,
+    "import/namespace": 2,
+    "import/newline-after-import": 2,
+    "import/no-amd": 2,
+    "import/no-extraneous-dependencies": 2,
+    "import/no-mutable-exports": 2,
+    "import/no-named-as-default": 2
   }
 }

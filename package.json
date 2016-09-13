@@ -67,6 +67,7 @@
     "chai": "^3.3.0",
     "eslint": "^3.0.0",
     "eslint-plugin-babel": "^3.3.0",
+    "eslint-plugin-import": "^1.14.0",
     "mocha": "^2.3.3",
     "mocha-eslint": "^2.1.1",
     "proxyquire": "^1.7.2",

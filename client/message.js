@@ -1,4 +1,4 @@
-import 'waypoints/lib/noframework.waypoints.js'
+import 'waypoints/lib/noframework.waypoints'
 import filmstrip2gif from 'filmstrip2gif'
 import createIdenticon from './identicon'
 import icons from './icons'
