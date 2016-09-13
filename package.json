@@ -1,7 +1,7 @@
 {
-  "name": "seatcamp",
-  "version": "1.0.0",
-  "description": "Web-based video chat with friends!",
+  "name": "partychurch",
+  "version": "0.1.0",
+  "description": "Web-based livestreaming with video chat!",
   "engines": {
     "node": ">=6.0.0"
   },
@@ -15,19 +15,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tec27/seatcamp"
+    "url": "https://github.com/forivall/partychurch"
   },
   "keywords": [
     "webrtc",
     "video",
+    "livestream",
     "chat"
   ],
-  "author": "Travis Collins <travis@tec27.com> (http://tec27.com/)",
+  "author": "Jordan Klassen <forivall@gmail.com> (http://forivall.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tec27/seatcamp/issues"
+    "url": "https://github.com/forivall/partychurch/issues"
   },
-  "homepage": "https://github.com/tec27/seatcamp",
+  "homepage": "https://github.com/forivall/partychurch",
   "dependencies": {
     "autoprefixer": "^6.0.1",
     "babel-plugin-transform-runtime": "^6.9.0",
