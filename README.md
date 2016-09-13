@@ -1,8 +1,8 @@
-![seatcamp](https://github.com/tec27/seatcamp/blob/master/icon/icon-256.png)
+![partychurch](https://github.com/forivall/partychurch/blob/master/icon/partychurch.png)
 
-#seatcamp
-A web-based ephemeral chat site that lets users send simple, short messages
-along with a 2-second video of themselves.
+#partychurch
+A web-based livestreaming site accompanied by ephemeral chat that lets viewers
+send simple, short messages along with a 2-second video of themselves.
 
 The offical server can be found at [https://chat.meatspac.es](https://chat.meatspac.es)
 
@@ -22,7 +22,7 @@ The offical server can be found at [https://chat.meatspac.es](https://chat.meats
 - [License](#license)
 
 ##Features
-- Send a message to anyone connected to the same seatcamp server
+- Send a message to anyone connected to the same partychurch server
 - Provides jpeg (filmstrip-style) videos alongside chats, which tend to be
 more efficient to display than videos used in meatspace-chat-v2 (h264
 videos are provided for legacy clients)
@@ -36,7 +36,7 @@ periods of time.
 
 ##Running a server
 ###Required software
-seatcamp requires [node](http://nodejs.org) >=6.0.0, ffmpeg/libav, and ImageMagick
+partychurch requires [node](http://nodejs.org) >=6.0.0, ffmpeg/libav, and ImageMagick
 in order to work. Node can be downloaded from the official site. ffmpeg or libav
 can generally be installed from your OS's package manager, or from source. Examples
 of installing it:
@@ -73,7 +73,7 @@ The server can then be run with:
 $ npm start
 ```
 
-If you are running a production seatcamp server, or simply want to
+If you are running a production partychurch server, or simply want to
 customize your development environment, you can change a few options in
 `conf.json`. The options are:
 
@@ -86,7 +86,7 @@ The port to run the HTTP server on for this instance.
 ####idKey
 The key to use for hashing user ID's. This allows users to be given a
 stable, unique ID per browser, but not expose their actual fingerprint
-to other users on the server or be able to track users across seatcamp
+to other users on the server or be able to track users across partychurch
 instances. This value should be unique to the server you're running it
 on and sufficiently long (10+ characters recommended).
 
@@ -114,7 +114,7 @@ A relative filepath to the private key used for the SSL certificate file specifi
 A relative filepath to the bundle of CA certificates to be used with the SSL certificate specified
 in `sslCert`. These should be provided by your certificate provider.
 
-**Ex:** `"sslCaBundle": "./certs/seatcamp.ca-bundle"`
+**Ex:** `"sslCaBundle": "./certs/partychurch.ca-bundle"`
 
 ####sslPort
 The port HTTPS connections should be accepted on.
@@ -127,7 +127,7 @@ The host non-HTTPS connections should be redirected to (the host of your HTTPS s
 **Ex:** `"canonicalHost": "https://seat.camp"`
 
 ##Protocol
-The protocol of seatcamp is built around socket.io, making use of binary frames where appropriate.
+The protocol of partychurch is built around socket.io, making use of binary frames where appropriate.
 
 ###Connecting
 Upon connecting, clients must send a fingerprint to the server. This fingerprint should uniquely
@@ -173,13 +173,13 @@ message is:
   "text": "The text the user sent",
   "sent": 1421135370231,
   "userId": "TheUserIDOftheSender",
-  "from": "seatcamp"
+  "from": "partychurch"
 }
 ```
 
 `videoType` and `videoMime` will change based on what video format you subscribed to. `sent` is a
 unix timestamp corresponding to when the message was originally sent. `from` specifies what server
-the message originated from (and can currently only be `seatcamp`).
+the message originated from (and can currently only be `partychurch`).
 
 Clients can send messages by sending a `chat` message themselves, with the first parameter in the
 following format:
@@ -215,12 +215,12 @@ to be known. These are all handled through seperate messages, which are:
 Specifies how many users are currently connected.
 ```javascript
 io.on('active', function(numActive) {
-  alert('There are ' + numActive + ' active seatcamp users!')
+  alert('There are ' + numActive + ' active partychurch users!')
 })
 ```
 
 ##Contributing
-seatcamp is written using ES6-compliant JavaScript, compiled to ES5 using babel. Client-side code
+partychurch is written using ES6-compliant JavaScript, compiled to ES5 using babel. Client-side code
 is similarly written, but compiled with `browserify` and `babelify`. Contributions should attempt to
 make use of ES6 features where they make sense. Pull requests are accepted and will be looked at in
 a timely manner. If you are contributing a new feature (rather than a bug fix), its a good idea to
@@ -232,11 +232,10 @@ New features will be accepted if they fortify/enhance behavior that developed fr
 the way the community uses the site.
 
 ##Special thanks to
+- [tec27](https://github.com/tec27) for maintaining meatspace as seatcamp
 - [ednapiranha](https://github.com/ednapiranha) for creating meatspace
 - [thethp](https://github.com/thethp) for [whosthatmeat](https://github.com/thethp/whosthatmeat)
 which inspired the identicons feature
-- [llkats](https://github.com/llkats) for [meatdelay](https://github.com/llkats/meatdelay) which
-inspired the built-in time delay feature that will be implemented REAL SOON NOW
 
 ##License
 MIT
