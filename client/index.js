@@ -76,6 +76,9 @@ function updateActiveUsers() {
 }
 
 createDropdown(document.querySelector('header .dropdown'), {
+  logout: () => {
+    console.log('todo')
+  },
   unmute: () => {
     muteSet.clear()
     tracker.onUnmute()

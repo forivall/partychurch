@@ -242,13 +242,29 @@ header .actions {
   background-color: #616161;
 }
 
-#message-list {
-  list-style-type: none;
+main {
+  height: 100%;
+  display: flex;
+
   margin: 56px auto 158px;
   padding: 0;
   min-width: 640px;
   width: 1400px;
+}
+
+#broadcast-pane {
+  position: absolute;
+  left: 0;
+  right: 50%;
+}
+
+#message-list {
   border-radius: 2px;
+  list-style-type: none;
+
+  position: absolute;
+  left: 50%;
+  right: 0;
 }
 
 #message-list li {
@@ -451,7 +467,7 @@ header .actions {
   color: rgba(255, 255, 255, 0.7)
 }
 
-footer {
+#message-input {
   display: flex;
 
   position: fixed;
@@ -464,7 +480,7 @@ footer {
   width: 1400px;
 }
 
-footer .progress {
+#message-input .progress {
   position: absolute;
 }
 
@@ -847,40 +863,20 @@ form {
 
 @media (max-width: 2000px) {
   #message-list {
-    width: 70%;
+    width: 892px;
   }
 
-  footer {
-    width: 70%;
+  #message-input {
+    width: 892px;
   }
 }
 
 @media (max-width: 1460px) {
   #message-list {
-    width: 80%;
-  }
-
-  footer {
-    width: 80%;
-  }
-}
-
-@media (max-width: 1200px) {
-  #message-list {
-    width: 892px;
-  }
-
-  footer {
-    width: 892px;
-  }
-}
-
-@media (max-width: 920px) {
-  #message-list {
     width: auto;
   }
 
-  footer {
+  #message-input {
     width: auto;
   }
 
@@ -890,7 +886,7 @@ form {
   }
 }
 
-@media screen and (max-device-width: 500px) {
+@media (max-width: 1000px) {
   #message-list {
     min-width: 0px;
     margin-bottom: 110px;
