@@ -6,6 +6,8 @@ import createDropdown from './dropdown'
 import localeTime from './locale-time'
 import theme from './theme'
 
+import template from './views/message.pug'
+
 const Waypoint = window.Waypoint
 
 const MESSAGE_LIMIT = 30
@@ -16,22 +18,7 @@ const MESSAGE_LIMIT = 30
 
 const BLANK_IMAGE = 'data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA='
 
-const MESSAGE_HTML = `
-  <div class="video-container">
-    <img class="filmstrip" src="${BLANK_IMAGE}"/>
-    <button class="save shadow-1" title="Save as GIF"></button>
-  </div>
-  <p>
-  <div class="message-meta">
-    <div class="dropdown">
-      <button class="toggle message-overflow" title="Message options"></button>
-      <div class="menu shadow-2">
-        <button data-action="mute">Mute user</button>
-      </div>
-    </div>
-    <div class="identicon"></div>
-    <time></time>
-  </div>`
+const MESSAGE_HTML = template({BLANK_IMAGE})
 
 class Message {
   constructor(owner) {

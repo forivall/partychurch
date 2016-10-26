@@ -1,9 +1,6 @@
-// Trying to avoid confusing the browserify transform with babel output
-/* eslint-disable no-var */
-var fs = require('fs')
+import template from './views/about.pug'
 
-var content = fs.readFileSync(__dirname + '/about.htm', 'utf8')
-/* eslint-enable no-var */
+const content = template()
 
 module.exports = function() {
   const scrim = document.createElement('div')

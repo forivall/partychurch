@@ -8,7 +8,8 @@
   "main": "index.js",
   "scripts": {
     "autotest": "mocha --watch -R spec --compilers js:test-compiler --recursive test/",
-    "lint": "eslint --ext .js ./ && echo Hooray || echo Please fix",
+    "lint": "eslint --ext .js ./ && npm run lint-pug && echo Hooray || echo Please fix",
+    "lint-pug": "pug-lint views client/views",
     "prepublish": "npm run test",
     "start": "node index.js",
     "test": "mocha -R spec --compilers js:test-compiler --recursive test/"
@@ -50,9 +51,10 @@
     "data-uri-to-buffer": "0.0.4",
     "express": "^4.9.8",
     "filmstrip2gif": "^1.0.1",
-    "jade": "^1.7.0",
     "postcss": "^5.0.8",
     "prepare-response": "^1.1.2",
+    "pug": "^2.0.0-beta6",
+    "pugify": "github:deedw/pugify",
     "rimraf": "^2.2.8",
     "serve-static": "^1.10.0",
     "sha1": "^1.1.0",
@@ -71,6 +73,7 @@
     "mocha": "^2.3.3",
     "mocha-eslint": "^2.1.1",
     "proxyquire": "^1.7.2",
+    "pug-lint": "^2.3.0",
     "stream-spigot": "^3.0.5"
   },
   "browserify": {

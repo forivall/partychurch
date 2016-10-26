@@ -6,6 +6,7 @@ import fs from 'fs'
 import socketIo from 'socket.io'
 import browserify from 'browserify-middleware'
 import bundleCollapser from 'bundle-collapser/plugin'
+import pugify from 'pugify'
 import serveStatic from 'serve-static'
 import serveCss from './lib/serve-css'
 import canonicalHost from 'canonical-host'
@@ -22,7 +23,7 @@ if (!userIdKey) {
 const app = express()
 app
   .set('x-powered-by', false)
-  .set('view engine', 'jade')
+  .set('view engine', 'pug')
 
 const servers = []
 let httpServer
@@ -77,9 +78,20 @@ const io = socketIo(httpServer)
 
 app.use(require('cookie-parser')())
 
-const browserifyOpts = {}
+const pugPlugin = pugify.pug({
+  pretty: !process.env.NODE_ENV === 'production',
+  compileDebug: !process.env.NODE_ENV === 'production'
+})
+
+const browserifyOpts = {
+  plugins: [{
+    plugin(b, opts) {
+      b.transform(pugPlugin)
+    }
+  }]
+}
 if (process.env.NODE_ENV === 'production') {
-  browserifyOpts.plugins = [{ plugin: bundleCollapser }]
+  browserifyOpts.plugins.push({ plugin: bundleCollapser })
 }
 
 app
