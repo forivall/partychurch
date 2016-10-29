@@ -39,7 +39,8 @@ html
             button(data-action='about') About
     main
       #broadcast-pane
-        | asdfasdf
+        .broadcaster-video.displayed
+          include ../client/views/video-container.pug
       #message-pane
         ul#message-list.shadow-1
     footer#message-input

@@ -15,6 +15,8 @@ import createFfmpegRunner from './lib/ffmpeg-runner'
 import ChatSockets from './lib/chat-sockets'
 import config from './conf.json'
 
+import {BLANK_IMAGE} from './client/constants'
+
 const userIdKey = config.idKey
 if (!userIdKey) {
   throw new Error('idKey must be specified in conf.json!')
@@ -96,7 +98,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app
   .get('/', (req, res) =>
-      res.render('index', { theme: req.cookies.theme, trackingId: config.gaTrackingId }))
+      res.render('index', { theme: req.cookies.theme, trackingId: config.gaTrackingId, BLANK_IMAGE }))
   .get('/client.js', browserify(__dirname + '/client/index.js', browserifyOpts))
   .get('/styles.css', serveCss(__dirname + '/css/styles.css'))
 

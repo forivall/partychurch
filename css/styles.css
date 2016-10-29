@@ -312,6 +312,16 @@ main {
   flex-shrink: 0;
 }
 
+#broadcast-pane .video-container {
+  width: 100%;
+  padding-bottom: 75%;
+  margin-bottom: -1px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+
 .video-container .filmstrip {
   display: none;
   width: 100%;

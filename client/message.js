@@ -5,6 +5,7 @@ import icons from './icons'
 import createDropdown from './dropdown'
 import localeTime from './locale-time'
 import theme from './theme'
+import {BLANK_IMAGE} from './constants'
 
 import template from './views/message.pug'
 
@@ -15,8 +16,6 @@ const MESSAGE_LIMIT = 30
   , NUM_VIDEO_FRAMES = 10
   , FILMSTRIP_DURATION = 0.92
   , FILMSTRIP_HORIZONTAL = false
-
-const BLANK_IMAGE = 'data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA='
 
 const MESSAGE_HTML = template({BLANK_IMAGE})
 
