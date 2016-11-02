@@ -1,4 +1,5 @@
 import createAbout from './about'
+import createActiveUsers from './active-users'
 import analytics from './analytics'
 import createDropdown from './dropdown'
 import getFingerprint from './fingerprint'
@@ -15,31 +16,18 @@ const app = {
   notificationCounter: new GlobalNotificationCounter()
 }
 
-let active = 0
+const activeUsers = window.au = createActiveUsers()
 io.on('connect', function() {
   io.emit('fingerprint', getFingerprint())
   io.emit('join', 'jpg')
 }).on('disconnect', function() {
-  active = 0
-  updateActiveUsers()
+  activeUsers.count = 0
 })
 
 io.on('userid', function(id) {
   app.clientId = id
   if (app.messageList) app.messageList.clientId = id
 })
-
-
-function updateActiveUsers() {
-  const elem = document.querySelector('#active-users')
-  if (active > 0) {
-    elem.innerHTML = '' + active
-    elem.title = `${active} active users`
-  } else {
-    elem.innerHTML = '?'
-    elem.title = 'not connected'
-  }
-}
 
 createDropdown(document.querySelector('header .dropdown'), {
   logout: () => {
