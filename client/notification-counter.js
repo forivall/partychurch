@@ -1,4 +1,4 @@
-export default class NotificationCounter {
+export class NotificationCounter {
   constructor() {
     const link = document.querySelector('link[rel=icon]')
     this.origIcon = link ? link.href : '/favicon.ico'
@@ -76,5 +76,35 @@ export default class NotificationCounter {
 
   _rel16(val) {
     return Math.round((val * this.canvas.width) / 16)
+  }
+}
+
+export default class GlobalNotificationCounter extends NotificationCounter {
+  constructor() {
+    super()
+    this.onVisibilityChange = this.onVisibilityChange.bind(this)
+
+    this._count = 0
+
+    document.addEventListener('visibilitychange', this.onVisibilityChange)
+  }
+
+  set unreadMessages(count) {
+    this._count = count
+    if (count > 0) {
+      this.setCount(count)
+    } else {
+      this.clear()
+    }
+  }
+  get unreadMessages() {
+    return this._count
+  }
+
+  onVisibilityChange() {
+    document.body.classList.toggle('backgrounded', document.hidden)
+    if (!document.hidden) {
+      this.unreadMessages = 0
+    }
   }
 }
