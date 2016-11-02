@@ -3,7 +3,7 @@ import analytics from './analytics'
 import createDropdown from './dropdown'
 import getFingerprint from './fingerprint'
 import io from './io'
-import NotificationCounter from './notification-counter'
+import GlobalNotificationCounter from './notification-counter'
 import * as room from './room'
 import StoredSet from './stored-set'
 import theme from './theme'
@@ -11,7 +11,8 @@ import transitionEvent from './transition-event'
 
 const app = {
   muteSet: new StoredSet('mutes'),
-  clientId: null
+  clientId: null,
+  notificationCounter: new GlobalNotificationCounter()
 }
 
 let active = 0
@@ -28,21 +29,6 @@ io.on('userid', function(id) {
   if (app.messageList) app.messageList.clientId = id
 })
 
-const notificationCounter = new NotificationCounter()
-io.on('chat', function(chat) {
-  const autoScroll = window.pageYOffset + window.innerHeight + 32 > document.body.clientHeight
-  const message = messageList.addMessage(chat, autoScroll)
-  if (message && autoScroll) {
-    message.elem.scrollIntoView()
-  }
-
-  if (message && document.hidden) {
-    notificationCounter.unreadMessages++
-  }
-}).on('active', function(numActive) {
-  active = numActive
-  updateActiveUsers()
-})
 
 function updateActiveUsers() {
   const elem = document.querySelector('#active-users')
@@ -60,7 +46,7 @@ createDropdown(document.querySelector('header .dropdown'), {
     console.log('todo')
   },
   unmute: () => {
-    muteSet.clear()
+    app.muteSet.clear()
     analytics.onUnmute()
   },
   changeTheme: () => {
@@ -82,76 +68,6 @@ const updateTheme = newTheme => {
 
 theme.on('themeChange', updateTheme)
 updateTheme(theme.getTheme())
-
-const messageInput = document.querySelector('#message')
-const sendButton = document.querySelector('#send')
-let awaitingAck = null
-let sendTime = 0
-
-createCharCounter(messageInput, document.querySelector('#char-counter'), 250)
-
-document.querySelector('form').addEventListener('submit', function(event) {
-  event.preventDefault()
-
-  if (awaitingAck) return
-
-  const messageText = messageInput.value
-  messageInput.readOnly = true
-  sendButton.setAttribute('disabled', true)
-  awaitingAck = cuid()
-  progressSpinner.setValue(0).show()
-
-  captureFrames(document.querySelector('#preview'), {
-    format: 'image/jpeg',
-    width: 200,
-    height: 150
-  }, function(err, frames) {
-    setTimeout(() => {
-      progressSpinner.hide()
-      setTimeout(() => progressSpinner.setValue(0), 400)
-    }, 400)
-
-    messageInput.value = ''
-    messageInput.readOnly = false
-    sendButton.removeAttribute('disabled')
-
-    if (err) {
-      awaitingAck = null
-      // TODO(tec27): show to user
-      tracker.onMessageCaptureError(err.message)
-      console.error(err)
-      return
-    }
-
-    const message = {
-      text: messageText,
-      format: 'image/jpeg',
-      ack: awaitingAck
-    }
-    io.emit('chat', message, frames)
-    sendTime = Date.now()
-    // fire 'change'
-    const event = document.createEvent('HTMLEvents')
-    event.initEvent('change', false, true)
-    messageInput.dispatchEvent(event)
-  }).on('progress', percentDone => progressSpinner.setValue(percentDone))
-})
-
-io.on('ack', function(ack) {
-  if (awaitingAck && awaitingAck === ack.key) {
-    const timing = Date.now() - sendTime
-    awaitingAck = null
-    if (ack.err) {
-      // TODO(tec27): display to user
-      console.log('Error: ' + ack.err)
-      tracker.onMessageSendError('' + ack.err, timing)
-    } else {
-      tracker.onMessageSent(timing)
-    }
-  }
-})
-
-cameraPreview(document.querySelector('#preview').parentNode, tracker)
 
 function showAbout() {
   const { scrim, container, dialog } = createAbout()

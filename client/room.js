@@ -12,6 +12,8 @@ export class Room {
   constructor(app) {
     this.onSubmitForm = this.onSubmitForm.bind(this)
     this.onAck = this.onAck.bind(this)
+    this.onChat = this.onChat.bind(this)
+    this.onActive = this.onActive.bind(this)
 
     this.progressSpinner = initProgressSpinner(
       document.querySelector('.progress')
@@ -39,6 +41,8 @@ export class Room {
     this.messageForm = document.querySelector('form')
     this.messageForm.addEventListener('submit', this.onSubmitForm)
     io.on('ack', this.onAck)
+    io.on('chat', this.onChat)
+    io.on('active', this.onActive)
 
     this.cameraPreview = createCameraPreview(
       document.querySelector('#preview').parentNode, analytics
@@ -111,6 +115,22 @@ export class Room {
         analytics.onMessageSent(timing)
       }
     }
+  }
+
+  onChat(chat) {
+    const autoScroll = window.pageYOffset + window.innerHeight + 32 > document.body.clientHeight
+    const message = messageList.addMessage(chat, autoScroll)
+    if (message && autoScroll) {
+      message.elem.scrollIntoView()
+    }
+
+    if (message && document.hidden) {
+      notificationCounter.unreadMessages++
+    }
+  }
+  onActive(numActive) {
+    active = numActive
+    updateActiveUsers()
   }
 }
 
