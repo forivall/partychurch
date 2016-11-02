@@ -1,4 +1,5 @@
 import createSocketIoClient from 'socket.io-client'
+import createActiveUsers from './active-users'
 import cameraPreview from './camera-preview'
 import captureFrames from './capture-frames'
 import cuid from 'cuid'
@@ -34,13 +35,12 @@ for (const t in possibleEvents) {
   }
 }
 
-let active = 0
+const activeUsers = window.au = createActiveUsers()
 io.on('connect', function() {
   io.emit('fingerprint', getFingerprint())
   io.emit('join', 'jpg')
 }).on('disconnect', function() {
-  active = 0
-  updateActiveUsers()
+  activeUsers.count = 0
 })
 
 io.on('userid', function(id) {
@@ -59,20 +59,8 @@ io.on('chat', function(chat) {
     notificationCounter.unreadMessages++
   }
 }).on('active', function(numActive) {
-  active = numActive
-  updateActiveUsers()
+  activeUsers.count = numActive
 })
-
-function updateActiveUsers() {
-  const elem = document.querySelector('#active-users')
-  if (active > 0) {
-    elem.innerHTML = '' + active
-    elem.title = `${active} active users`
-  } else {
-    elem.innerHTML = '?'
-    elem.title = 'not connected'
-  }
-}
 
 createDropdown(document.querySelector('header .dropdown'), {
   logout: () => {
