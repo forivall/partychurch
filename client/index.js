@@ -3,6 +3,7 @@ import cameraPreview from './camera-preview'
 import captureFrames from './capture-frames'
 import cuid from 'cuid'
 import getFingerprint from './fingerprint'
+import io from './io'
 import NotificationCounter from './notification-counter'
 import StoredSet from './stored-set'
 import createCharCounter from './char-counter'
@@ -13,7 +14,6 @@ import theme from './theme'
 import createAbout from './about'
 import Tracker from './analytics'
 
-const io = createSocketIoClient()
 const muteSet = new StoredSet('mutes')
 const progressSpinner = initProgressSpinner(document.querySelector('.progress'))
 const tracker = new Tracker()
