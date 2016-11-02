@@ -47,7 +47,7 @@ io.on('userid', function(id) {
   messageList.clientId = id
 })
 
-let unreadMessages = 0
+const notificationCounter = new NotificationCounter()
 io.on('chat', function(chat) {
   const autoScroll = window.pageYOffset + window.innerHeight + 32 > document.body.clientHeight
   const message = messageList.addMessage(chat, autoScroll)
@@ -56,8 +56,7 @@ io.on('chat', function(chat) {
   }
 
   if (message && document.hidden) {
-    unreadMessages++
-    updateNotificationCount()
+    notificationCounter.unreadMessages++
   }
 }).on('active', function(numActive) {
   active = numActive
@@ -172,23 +171,6 @@ io.on('ack', function(ack) {
 })
 
 cameraPreview(document.querySelector('#preview').parentNode, tracker)
-
-document.addEventListener('visibilitychange', () => {
-  document.body.classList.toggle('backgrounded', document.hidden)
-  if (!document.hidden) {
-    unreadMessages = 0
-    updateNotificationCount()
-  }
-})
-
-const notificationCounter = new NotificationCounter()
-function updateNotificationCount() {
-  if (!unreadMessages) {
-    notificationCounter.clear()
-  } else {
-    notificationCounter.setCount(unreadMessages)
-  }
-}
 
 function showAbout() {
   const { scrim, container, dialog } = createAbout()
