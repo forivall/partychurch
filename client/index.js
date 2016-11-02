@@ -1,8 +1,11 @@
+import page from 'page'
+
 import createAbout from './about'
 import createActiveUsers from './active-users'
 import analytics from './analytics'
 import createDropdown from './dropdown'
 import getFingerprint from './fingerprint'
+import * as home from './home'
 import io from './io'
 import GlobalNotificationCounter from './notification-counter'
 import * as room from './room'
@@ -10,13 +13,14 @@ import StoredSet from './stored-set'
 import theme from './theme'
 import transitionEvent from './transition-event'
 
+const activeUsers = createActiveUsers()
 const app = {
   muteSet: new StoredSet('mutes'),
   clientId: null,
-  notificationCounter: new GlobalNotificationCounter()
+  notificationCounter: new GlobalNotificationCounter(),
+  activeUsers
 }
 
-const activeUsers = window.au = createActiveUsers()
 io.on('connect', function() {
   io.emit('fingerprint', getFingerprint())
   io.emit('join', 'jpg')
@@ -48,14 +52,15 @@ createDropdown(document.querySelector('header .dropdown'), {
   },
 })
 
-const updateTheme = newTheme => {
+// init theme
+;(updateTheme => {
+  theme.on('themeChange', updateTheme)
+  updateTheme(theme.getTheme())
+})(newTheme => {
   document.body.classList.toggle('dark', newTheme === 'dark')
   const otherTheme = newTheme === 'light' ? 'dark' : 'light'
   document.querySelector('#change-theme').textContent = `Use ${otherTheme} theme`
-}
-
-theme.on('themeChange', updateTheme)
-updateTheme(theme.getTheme())
+})
 
 function showAbout() {
   const { scrim, container, dialog } = createAbout()
@@ -85,3 +90,15 @@ function showAbout() {
   }
   container.addEventListener('click', clickListener)
 }
+
+// router
+
+const done = Function.prototype
+// TODO: render out jade template of main content
+page('/', home.enter, done)
+page.exit('/', home.exit)
+page('/:room', room.enter, done)
+page.exit('/:room', room.exit)
+page.redirect('*', '/')
+
+page.start()

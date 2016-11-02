@@ -15,6 +15,8 @@ export class Room {
     this.onChat = this.onChat.bind(this)
     this.onActive = this.onActive.bind(this)
 
+    this.activeUsers = app.activeUsers
+
     this.progressSpinner = initProgressSpinner(
       document.querySelector('.progress')
     )
@@ -50,6 +52,7 @@ export class Room {
   }
 
   destroy() {
+    this.activeUsers = null
     this.messageList.destroy()
     this.charCounter.destroy()
     this.messageForm.removeEventListener('submit', this.onSubmitForm)
@@ -129,17 +132,18 @@ export class Room {
     }
   }
   onActive(numActive) {
-    active = numActive
-    updateActiveUsers()
+    this.activeUsers.count = numActive
   }
 }
 
 export function enter(ctx, next) {
+  console.log('room enter')
   ctx.room = new Room(ctx)
   next()
 }
 
 export function exit(ctx, next) {
+  console.log('room enter')
   ctx.room = (ctx.room.destroy(), null)
   next()
 }
