@@ -74,6 +74,7 @@ function initWebrtc(video, width, height, facing, cb) {
     return
   }
 
+  // TODO(forivall): this is deprecated. Replace with MediaDevices.enumerateDevices
   window.MediaStreamTrack.getSources(infos => {
     let found = false
     let hasFront = false

@@ -1,0 +1,48 @@
+doctype html
+html
+  head
+    title partychurch
+    style.
+      body {
+        background-color: #ECECEC;
+        color: rgba(0, 0, 0, 0.87);
+        width: 100%;
+        height: 100%;
+      }
+
+      body.dark {
+        background-color: #212121;
+        color: #ffffff;
+      }
+    link(rel='manifest', href='manifest.json')
+    link(type='text/css', rel='stylesheet',
+      href='//fonts.googleapis.com/css?family=Roboto:300,500,400|Material+Icons')
+    link(type='text/css', rel='stylesheet', href='styles.css?20160713')
+    link(type='image/x-icon', rel='icon', href='favicon.ico')
+    meta(name='theme-color', content='#212121')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    meta(content='width=device-width, height=device-height, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0',
+         name='viewport')
+    meta(content='yes', name='mobile-web-app-capable')
+    meta(content='yes', name='apple-mobile-web-app-capable')
+  body(class=theme == 'dark' ? 'dark' : '')
+    header.shadow-1
+      p partychurch
+      .actions
+        block user-counter
+          p#active-users ?
+        div.dropdown
+          button.toggle.icon-invert.material-icons(title="Options") more_vert
+          div.menu.shadow-2
+            button#logout-button(data-action='logout') Logout
+            button(data-action='unmute') Unmute all
+            button#change-theme(data-action='changeTheme') Use dark theme
+            button(data-action='about') About
+    block main
+    if trackingId
+      script(type='text/javascript').
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date
+        ga('create', '!{trackingId}', 'auto')
+        ga('send', 'pageview')
+      script(type='text/javascript', async, src='//www.google-analytics.com/analytics.js')
+    script(type='text/javascript', async, src='client.js')

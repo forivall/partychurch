@@ -244,7 +244,6 @@ header .actions {
 
 main {
   height: 100%;
-  display: flex;
 
   margin: 56px auto 158px;
   padding: 0;
@@ -569,7 +568,7 @@ main {
   display: none;
 }
 
-form {
+#message-form {
   align-self: flex-end;
   background-color: #fafafa;
   border-radius: 2px;
@@ -579,7 +578,7 @@ form {
   overflow: hidden;
 }
 
-.dark form {
+.dark #message-form {
   background-color: #303030;
 }
 

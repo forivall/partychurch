@@ -1,5 +1,5 @@
 
-export default class Tracker {
+export class Tracker {
   constructor() {
   }
 
@@ -75,3 +75,6 @@ export default class Tracker {
     this._sendEvent('about', 'show')
   }
 }
+
+const analytics = new Tracker()
+export default analytics

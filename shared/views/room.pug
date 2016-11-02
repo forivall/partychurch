@@ -1,0 +1,31 @@
+
+main
+  #broadcast-pane
+    if hostFingerprint === null
+      include password.pug
+    else
+      //- 
+      .broadcaster-video.displayed
+        include video-container.pug
+  #message-pane
+    ul#message-list.shadow-1
+footer#message-input
+  div.preview-container.shadow-1.camera-enabled
+    div.camera-disabled-message
+      span.camera-disabled-icon.icon-invert.material-icons videocam_off
+      span.camera-disabled-text Please enable your webcam
+    video#preview
+  .progress.shadow-1
+    .circle
+      .mask.full
+        .fill
+      .mask.half
+        .fill
+        .fill.fix
+    .inset.shadow-1
+        p.text 0%
+  form#message-form.shadow-1
+    input#message(type='text', maxlength='250', autofocus='true', autocomplete='off',
+      autocorrect='on', autocapitalize='on', spellcheck='true')
+    p#char-counter 0 / 250
+    button#send.icon-invert.material-icons(type='submit', title="Send") send
