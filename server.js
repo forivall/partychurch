@@ -105,21 +105,22 @@ function setTemplateVars(req, res, next) {
   next()
 }
 
-app
-  .get('/client.js', browserify(__dirname + '/client/index.js', browserifyOpts))
-  .get('/styles.css', serveCss(__dirname + '/css/styles.css'))
-  .get('/', setTemplateVars, (req, res) => {
-    res.render('index', req.templateVars)
-  })
-  .get('/:room', setTemplateVars, (req, res) => {
-    Object.assign(req.templateVars, {
-      isNew: true,
-      hostId: null,
-    })
-    res.render('room', req.templateVars)
-  })
+app.get('/client.js', browserify(__dirname + '/client/index.js', browserifyOpts))
+app.get('/styles.css', serveCss(__dirname + '/css/styles.css'))
+app.get('/', setTemplateVars, (req, res) => {
+  res.render('index', req.templateVars)
+})
 
 app.use(serveStatic('public'))
+
+app.get('/:room', setTemplateVars, (req, res) => {
+  Object.assign(req.templateVars, {
+    isNew: true,
+    hostId: null,
+  })
+  res.render('room', req.templateVars)
+})
+
 
 const readyPromise = new Promise((resolve, reject) => {
   userCounter(io)
