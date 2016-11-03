@@ -11,11 +11,12 @@ import initProgressSpinner from './progress'
 export class Room {
   constructor(app) {
     this.onSubmitForm = this.onSubmitForm.bind(this)
-    this.onAck = this.onAck.bind(this)
-    this.onChat = this.onChat.bind(this)
-    this.onActive = this.onActive.bind(this)
+    this.onAck = this._bindHandler(this.onAck)
+    this.onChat = this._bindHandler(this.onChat)
+    this.onActive = this._bindHandler(this.onActive)
 
     this.activeUsers = app.activeUsers
+    this.notificationCounter = app.notificationCounter
 
     this.progressSpinner = initProgressSpinner(
       document.querySelector('.progress')
@@ -52,12 +53,21 @@ export class Room {
   }
 
   destroy() {
+    this._disposed = true
+
     this.activeUsers = null
     this.messageList.destroy()
     this.charCounter.destroy()
     this.messageForm.removeEventListener('submit', this.onSubmitForm)
     io.off('ack, this.onAck')
     this.cameraPreview.destroy()
+  }
+
+  _bindHandler(handler) {
+    return function() {
+      if (this._disposed) return null
+      return handler.apply(this, arguments)
+    }.bind(this)
   }
 
   onSubmitForm(event) {
@@ -122,13 +132,13 @@ export class Room {
 
   onChat(chat) {
     const autoScroll = window.pageYOffset + window.innerHeight + 32 > document.body.clientHeight
-    const message = messageList.addMessage(chat, autoScroll)
+    const message = this.messageList.addMessage(chat, autoScroll)
     if (message && autoScroll) {
       message.elem.scrollIntoView()
     }
 
     if (message && document.hidden) {
-      notificationCounter.unreadMessages++
+      this.notificationCounter.unreadMessages++
     }
   }
   onActive(numActive) {
@@ -143,7 +153,7 @@ export function enter(ctx, next) {
 }
 
 export function exit(ctx, next) {
-  console.log('room enter')
+  console.log('room exit')
   ctx.room = (ctx.room.destroy(), null)
   next()
 }

@@ -1,5 +1,7 @@
 class CharCounter {
   constructor(input, counter, limit = 250) {
+    this.updateCounter = this.updateCounter.bind(this)
+
     this.input = input
     this.counter = counter
     this.limit = limit
@@ -7,7 +9,14 @@ class CharCounter {
     this.updateCounter()
 
     ;['keyup', 'change', 'input', 'paste'].forEach(event =>
-        input.addEventListener(event, () => this.updateCounter()))
+      input.addEventListener(event, this.updateCounter)
+    )
+  }
+
+  destroy() {
+    ;['keyup', 'change', 'input', 'paste'].forEach(event =>
+      this.input.removeEventListener(event, this.updateCounter)
+    )
   }
 
   updateCounter() {

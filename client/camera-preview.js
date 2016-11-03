@@ -3,6 +3,9 @@ import icons from './icons'
 
 class CameraPreview {
   constructor(previewContainer, tracker) {
+    this.onSwitchCamera = this.onSwitchCamera.bind(this)
+    this.onStorage = this.onStorage.bind(this)
+
     this.container = previewContainer
     this.videoElem = previewContainer.querySelector('video')
     this.facing = null
@@ -10,14 +13,15 @@ class CameraPreview {
     this.videoStream = null
     this.tracker = tracker
 
-    this.switchButtonListener = () => this.onSwitchCamera()
-
     this.loadFacing()
-    window.addEventListener('storage', evt => {
-      if (evt.key === 'cameraFacing') {
-        this.loadFacing()
-      }
-    })
+    window.addEventListener('storage', this.onStorage)
+  }
+
+  destroy() {
+    window.removeEventListener('storage', this.onStorage)
+    if (this.switchButton) {
+      this.switchButton.removeEventListener('click', this.onSwitchCamera)
+    }
   }
 
   loadFacing() {
@@ -85,7 +89,7 @@ class CameraPreview {
     this.switchButton.classList.add('switch-camera', 'shadow-1')
     const otherCameraTitle = this.videoStream.facing === 'front' ? 'rear' : 'front'
     this.switchButton.setAttribute('title', `Switch to ${otherCameraTitle} camera`)
-    this.switchButton.addEventListener('click', this.switchButtonListener)
+    this.switchButton.addEventListener('click', this.onSwitchCamera)
     if (this.videoStream.facing === 'front') {
       this.switchButton.appendChild(icons.cameraRear('invert'))
     } else {
@@ -100,6 +104,12 @@ class CameraPreview {
     window.localStorage.setItem('cameraFacing', this.facing)
     this.tracker.onCameraFacingChange(this.facing)
     this.initializeCamera()
+  }
+
+  onStorage(evt) {
+    if (evt.key === 'cameraFacing') {
+      this.loadFacing()
+    }
   }
 }
 

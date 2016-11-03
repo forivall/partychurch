@@ -199,6 +199,8 @@ class Message {
 
 class MessageList {
   constructor(listElem, muteSet, tracker) {
+    this._onThemeChange = this._onThemeChange.bind(this)
+
     this.elem = listElem
     this.messages = []
     this.messageKeys = new Set()
@@ -208,7 +210,7 @@ class MessageList {
     this._mutes = muteSet
     this._tracker = tracker
 
-    theme.on('themeChange', newTheme => this._onThemeChange(newTheme))
+    theme.on('themeChange', this._onThemeChange)
   }
 
   addMessage(chat, removeOverLimit = true) {
@@ -259,6 +261,14 @@ class MessageList {
 
   trackSaveGif() {
     this._tracker.onSaveGif()
+  }
+
+  destroy() {
+    for (const message of this.messages) {
+      message.unbind()
+      message.dispose()
+    }
+    theme.removeListener('themeChange', this._onThemeChange)
   }
 
   _recycle(messages) {
