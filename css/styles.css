@@ -245,25 +245,28 @@ header .actions {
 main {
   height: 100%;
 
-  margin: 56px auto 158px;
+  margin: 56px auto 0;
   padding: 0;
   min-width: 640px;
-  width: 1400px;
+  max-width: 1400px;
+}
+
+main.room {
+  margin: 56px auto 158px;
+  display: flex;
 }
 
 #broadcast-pane {
-  position: absolute;
-  left: 0;
-  right: 50%;
+  width: 50%;
+}
+
+#message-pane {
+  width: 50%;
 }
 
 #message-list {
   border-radius: 2px;
   list-style-type: none;
-
-  position: absolute;
-  left: 50%;
-  right: 0;
 }
 
 #message-list li {
@@ -872,11 +875,11 @@ main {
 
 @media (max-width: 2000px) {
   #message-list {
-    width: 892px;
+    max-width: 892px;
   }
 
   #message-input {
-    width: 892px;
+    max-width: 892px;
   }
 }
 
