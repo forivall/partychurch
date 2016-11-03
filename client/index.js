@@ -13,6 +13,10 @@ import StoredSet from './stored-set'
 import theme from './theme'
 import transitionEvent from './transition-event'
 
+import {BLANK_IMAGE} from './constants'
+import homeTemplate from '../shared/views/index.pug'
+import roomTemplate from '../shared/views/room.pug'
+
 const activeUsers = createActiveUsers()
 const app = {
   muteSet: new StoredSet('mutes'),
@@ -94,10 +98,51 @@ function showAbout() {
 // router
 
 const done = Function.prototype
+
 // TODO: render out jade template of main content
-page('/', home.enter, done)
+let dispatch = true
+page((ctx, next) => {
+  ctx.dispatch = dispatch
+  dispatch = false
+  console.log(ctx)
+  ctx.app = app
+  next()
+})
+
+
+const childNodes = Array.from(document.body.childNodes)
+
+let mainStart
+let mainEnd
+for (const childNode of childNodes) {
+  if (childNode.nodeType === window.Node.COMMENT_NODE) {
+    if (/!!! main start !!!/.test(childNode.textContent)) {
+      mainStart = childNode
+    } else if (/!!! main end !!!/.test(childNode.textContent)) {
+      mainEnd = childNode
+    }
+  }
+}
+
+function render(template) {
+  return (ctx, next) => {
+    if (ctx.dispatch) return next()
+
+    // clear out the main block
+    while (mainStart.nextSibling !== mainEnd) {
+      mainStart.nextSibling.remove()
+    }
+
+    // render the template into the main block
+    const frag = document.createRange().createContextualFragment(template({BLANK_IMAGE}))
+    document.body.insertBefore(frag, mainEnd)
+
+    return next()
+  }
+}
+page('/', render(homeTemplate), home.enter, done)
 page.exit('/', home.exit)
-page('/:room', room.enter, done)
+page('/:room', render(roomTemplate), room.enter, done)
 page.exit('/:room', room.exit)
 page.redirect('*', '/')
 

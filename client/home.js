@@ -1,5 +1,5 @@
 export function enter(ctx, next) {
-  console.log('home')
+  console.log('home', ctx.app)
   next()
 }
 

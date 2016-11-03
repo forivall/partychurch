@@ -138,7 +138,7 @@ export class Room {
 
 export function enter(ctx, next) {
   console.log('room enter')
-  ctx.room = new Room(ctx)
+  ctx.room = new Room(ctx.app)
   next()
 }
 
