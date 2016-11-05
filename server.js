@@ -130,14 +130,11 @@ const readyPromise = new Promise((resolve, reject) => {
     }
 
     // eslint-disable-next-line no-unused-vars
-    const chat = new ChatSockets(
-      io,
-      userIdKey,
-      runner,
-      15, /* server backscroll limit */
-      10 * 60 * 1000, /* expiry time */
-      1.2548346 /* expiry gain factor, calculated so last message =~ 6 hours */
-    )
+    const chat = new ChatSockets(io, userIdKey, runner, {
+      historyLimit: 15,
+      historyExpiryMs: 10 * 60 * 1000,
+      expiryGainFactor: 1.2548346 /* calculated so last message =~ 6 hours */
+    })
 
     httpServer.listen(listenPort, function() {
       const host = httpServer.address().address

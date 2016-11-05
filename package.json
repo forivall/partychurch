@@ -55,7 +55,7 @@
     "postcss": "^5.0.8",
     "prepare-response": "^1.1.2",
     "pug": "^2.0.0-beta6",
-    "pugify": "github:deedw/pugify",
+    "pugify": "^2.1.0",
     "rimraf": "^2.2.8",
     "serve-static": "^1.10.0",
     "sha1": "^1.1.0",
