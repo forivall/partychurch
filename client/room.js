@@ -4,12 +4,13 @@ import analytics from './analytics'
 import createCameraPreview from './camera-preview'
 import captureFrames from './capture-frames'
 import createCharCounter from './char-counter'
-import io from './io'
+import io, {EventSubscriber} from './io'
 import initMessageList from './message'
 import initProgressSpinner from './progress'
 
-export class Room {
+export class Room extends EventSubscriber {
   constructor(app) {
+    super()
     this.onSubmitForm = this.onSubmitForm.bind(this)
     this.onAck = this._bindHandler(this.onAck)
     this.onChat = this._bindHandler(this.onChat)
@@ -43,9 +44,10 @@ export class Room {
 
     this.messageForm = document.querySelector('form')
     this.messageForm.addEventListener('submit', this.onSubmitForm)
-    io.on('ack', this.onAck)
-    io.on('chat', this.onChat)
-    io.on('active', this.onActive)
+
+    this.listenTo(io, 'ack', this.onAck)
+    this.listenTo(io, 'chat', this.onChat)
+    this.listenTo(io, 'active', this.onActive)
 
     this.cameraPreview = createCameraPreview(
       document.querySelector('#preview').parentNode, analytics
@@ -54,12 +56,12 @@ export class Room {
 
   destroy() {
     this._disposed = true
+    super.destroy()
 
     this.activeUsers = null
     this.messageList.destroy()
     this.charCounter.destroy()
     this.messageForm.removeEventListener('submit', this.onSubmitForm)
-    io.off('ack, this.onAck')
     this.cameraPreview.destroy()
   }
 
