@@ -27,7 +27,6 @@ const app = {
 
 io.on('connect', function() {
   io.emit('fingerprint', getFingerprint())
-  io.emit('join', 'jpg')
 }).on('disconnect', function() {
   activeUsers.count = 0
 })

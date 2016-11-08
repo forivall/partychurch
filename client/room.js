@@ -9,12 +9,14 @@ import initMessageList from './message'
 import initProgressSpinner from './progress'
 
 export class Room extends EventSubscriber {
-  constructor(app) {
+  constructor(name, app) {
     super()
     this.onSubmitForm = this.onSubmitForm.bind(this)
     this.onAck = this._bindHandler(this.onAck)
     this.onChat = this._bindHandler(this.onChat)
     this.onActive = this._bindHandler(this.onActive)
+
+    this.name = name
 
     this.activeUsers = app.activeUsers
     this.notificationCounter = app.notificationCounter
@@ -49,6 +51,12 @@ export class Room extends EventSubscriber {
     this.listenTo(io, 'chat', this.onChat)
     this.listenTo(io, 'active', this.onActive)
 
+    if (io.connected) {
+      this.join()
+    } else {
+      this.listenTo(io, 'connect', this.join.bind(this))
+    }
+
     this.cameraPreview = createCameraPreview(
       document.querySelector('#preview').parentNode, analytics
     )
@@ -70,6 +78,10 @@ export class Room extends EventSubscriber {
       if (this._disposed) return null
       return handler.apply(this, arguments)
     }.bind(this)
+  }
+
+  join() {
+    io.emit('join', this.name)
   }
 
   onSubmitForm(event) {
@@ -149,13 +161,11 @@ export class Room extends EventSubscriber {
 }
 
 export function enter(ctx, next) {
-  console.log('room enter')
-  ctx.room = new Room(ctx.app)
+  ctx.room = new Room(ctx.params.room, ctx.app)
   next()
 }
 
 export function exit(ctx, next) {
-  console.log('room exit')
   ctx.room = (ctx.room.destroy(), null)
   next()
 }

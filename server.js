@@ -107,6 +107,8 @@ function setTemplateVars(req, res, next) {
 
 app.get('/client.js', browserify(__dirname + '/client/index.js', browserifyOpts))
 app.get('/styles.css', serveCss(__dirname + '/css/styles.css'))
+
+// TODO: use pug-linker directly to include child pug templates
 app.get('/', setTemplateVars, (req, res) => {
   res.render('index', req.templateVars)
 })
