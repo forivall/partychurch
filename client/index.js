@@ -1,4 +1,5 @@
 import page from 'page'
+import ioNamespace from 'socket.io-client'
 
 import createAbout from './about'
 import createActiveUsers from './active-users'
@@ -6,7 +7,6 @@ import analytics from './analytics'
 import createDropdown from './dropdown'
 import getFingerprint from './fingerprint'
 import * as home from './home'
-import io from './io'
 import GlobalNotificationCounter from './notification-counter'
 import * as room from './room'
 import StoredSet from './stored-set'
@@ -17,8 +17,12 @@ import {BLANK_IMAGE} from './constants'
 import homeTemplate from '../shared/views/index.pug'
 import roomTemplate from '../shared/views/room.pug'
 
+window.localStorage.debug = 'partychurch:*'
+
+const io = ioNamespace()
 const activeUsers = createActiveUsers()
 const app = {
+  io,
   muteSet: new StoredSet('mutes'),
   clientId: null,
   notificationCounter: new GlobalNotificationCounter(),

@@ -1,13 +1,17 @@
 import cuid from 'cuid'
+import createDebug from 'debug'
 import page from 'page'
+import createClient from 'socket.io-client'
 
 import analytics from './analytics'
 import createCameraPreview from './camera-preview'
 import captureFrames from './capture-frames'
 import createCharCounter from './char-counter'
-import io, {EventSubscriber} from './io'
+import EventSubscriber from './event-subscriber'
 import initMessageList from './message'
 import initProgressSpinner from './progress'
+
+const debug = createDebug('partychurch:room')
 
 export class Room extends EventSubscriber {
   constructor(name, app) {
@@ -19,6 +23,7 @@ export class Room extends EventSubscriber {
     this.onActive = this._bindHandler(this.onActive)
 
     this.name = name
+    this.io = createClient(`/${this.name}`)
 
     this.activeUsers = app.activeUsers
     this.notificationCounter = app.notificationCounter
@@ -49,15 +54,16 @@ export class Room extends EventSubscriber {
     this.messageForm = document.querySelector('form')
     this.messageForm.addEventListener('submit', this.onSubmitForm)
 
-    this.listenTo(io, 'ack', this.onAck)
-    this.listenTo(io, 'nak', this.onExit)
-    this.listenTo(io, 'chat', this.onChat)
-    this.listenTo(io, 'active', this.onActive)
+    this.listenTo(this.io, 'ack', this.onAck)
+    this.listenTo(this.io, 'exit', this.onExit)
+    this.listenTo(this.io, 'chat', this.onChat)
+    this.listenTo(this.io, 'active', this.onActive)
 
-    if (io.connected) {
-      this.join()
+    debug('connecting')
+    if (this.io.connected) {
+      this.join('jpg')
     } else {
-      this.listenTo(io, 'connect', this.join.bind(this))
+      this.listenTo(this.io, 'connect', this.join.bind(this))
     }
 
     this.cameraPreview = createCameraPreview(
@@ -84,7 +90,8 @@ export class Room extends EventSubscriber {
   }
 
   join() {
-    io.emit('join', this.name)
+    debug('join')
+    this.io.emit('join', this.name)
   }
 
   onSubmitForm(event) {
@@ -124,7 +131,7 @@ export class Room extends EventSubscriber {
         format: 'image/jpeg',
         ack: this.awaitingAck
       }
-      io.to(this.name).emit('chat', message, frames)
+      this.io.emit('chat', message, frames)
       this.sendTime = Date.now()
       // fire 'change'
       const event = document.createEvent('HTMLEvents')
@@ -139,7 +146,7 @@ export class Room extends EventSubscriber {
       this.awaitingAck = null
       if (ack.err) {
         // TODO(tec27): display to user
-        console.log('Error: ' + ack.err)
+        debug('Error: ' + ack.err)
         analytics.onMessageSendError('' + ack.err, timing)
       } else {
         analytics.onMessageSent(timing)
@@ -148,7 +155,7 @@ export class Room extends EventSubscriber {
   }
 
   exit() {
-    io.to(this.name).emit('exit')
+    this.io.emit('exit')
   }
 
   onExit(exit) {
