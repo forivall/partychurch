@@ -1,4 +1,5 @@
 import cuid from 'cuid'
+import page from 'page'
 
 import analytics from './analytics'
 import createCameraPreview from './camera-preview'
@@ -13,6 +14,7 @@ export class Room extends EventSubscriber {
     super()
     this.onSubmitForm = this.onSubmitForm.bind(this)
     this.onAck = this._bindHandler(this.onAck)
+    this.onExit = this._bindHandler(this.onExit)
     this.onChat = this._bindHandler(this.onChat)
     this.onActive = this._bindHandler(this.onActive)
 
@@ -48,6 +50,7 @@ export class Room extends EventSubscriber {
     this.messageForm.addEventListener('submit', this.onSubmitForm)
 
     this.listenTo(io, 'ack', this.onAck)
+    this.listenTo(io, 'nak', this.onExit)
     this.listenTo(io, 'chat', this.onChat)
     this.listenTo(io, 'active', this.onActive)
 
@@ -121,7 +124,7 @@ export class Room extends EventSubscriber {
         format: 'image/jpeg',
         ack: this.awaitingAck
       }
-      io.emit('chat', message, frames)
+      io.to(this.name).emit('chat', message, frames)
       this.sendTime = Date.now()
       // fire 'change'
       const event = document.createEvent('HTMLEvents')
@@ -144,6 +147,16 @@ export class Room extends EventSubscriber {
     }
   }
 
+  exit() {
+    io.to(this.name).emit('exit')
+  }
+
+  onExit(exit) {
+    if (exit.room !== this.name) return
+
+    page.show('/', {message: exit.message})
+  }
+
   onChat(chat) {
     const autoScroll = window.pageYOffset + window.innerHeight + 32 > document.body.clientHeight
     const message = this.messageList.addMessage(chat, autoScroll)
@@ -155,6 +168,7 @@ export class Room extends EventSubscriber {
       this.notificationCounter.unreadMessages++
     }
   }
+
   onActive(numActive) {
     this.activeUsers.count = numActive
   }
@@ -166,6 +180,7 @@ export function enter(ctx, next) {
 }
 
 export function exit(ctx, next) {
+  ctx.room.exit()
   ctx.room = (ctx.room.destroy(), null)
   next()
 }
