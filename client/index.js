@@ -17,22 +17,31 @@ import {BLANK_IMAGE} from './constants'
 import homeTemplate from '../shared/views/index.pug'
 import roomTemplate from '../shared/views/room.pug'
 
-window.localStorage.debug = 'partychurch:*'
+window.localStorage.debug = 'partychurch:*,engine.io-client:*'
 
-const io = ioNamespace()
+const io = ioNamespace('/home')
 const activeUsers = createActiveUsers()
 const app = {
   io,
   muteSet: new StoredSet('mutes'),
   clientId: null,
   notificationCounter: new GlobalNotificationCounter(),
-  activeUsers
+  activeUsers,
+  get messageList() {
+    const appRoom = app.room
+    return appRoom == null ? null : appRoom.messageList
+  },
+  onjoin: Function.prototype
 }
 
 io.on('connect', function() {
   io.emit('fingerprint', getFingerprint())
 }).on('disconnect', function() {
   activeUsers.count = 0
+})
+
+io.on('joinroom', function(exists) {
+  app.onjoin(exists)
 })
 
 io.on('userid', function(id) {

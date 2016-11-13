@@ -18,12 +18,12 @@ export class Room extends EventSubscriber {
     super()
     this.onSubmitForm = this.onSubmitForm.bind(this)
     this.onAck = this._bindHandler(this.onAck)
-    this.onExit = this._bindHandler(this.onExit)
+    this.leave = this._bindHandler(this.leave)
     this.onChat = this._bindHandler(this.onChat)
     this.onActive = this._bindHandler(this.onActive)
 
     this.name = name
-    this.io = createClient(`/${this.name}`)
+    this.io = createClient(`/room/${this.name}`)
 
     this.activeUsers = app.activeUsers
     this.notificationCounter = app.notificationCounter
@@ -55,7 +55,6 @@ export class Room extends EventSubscriber {
     this.messageForm.addEventListener('submit', this.onSubmitForm)
 
     this.listenTo(this.io, 'ack', this.onAck)
-    this.listenTo(this.io, 'exit', this.onExit)
     this.listenTo(this.io, 'chat', this.onChat)
     this.listenTo(this.io, 'active', this.onActive)
 
@@ -154,14 +153,8 @@ export class Room extends EventSubscriber {
     }
   }
 
-  exit() {
-    this.io.emit('exit')
-  }
-
-  onExit(exit) {
-    if (exit.room !== this.name) return
-
-    page.show('/', {message: exit.message})
+  leave(msg = {}) {
+    debug('leave %s', this.name)
   }
 
   onChat(chat) {
@@ -182,12 +175,23 @@ export class Room extends EventSubscriber {
 }
 
 export function enter(ctx, next) {
-  ctx.room = new Room(ctx.params.room, ctx.app)
-  next()
+  const app = ctx.app
+  app.onjoin = (exists) => {
+    if (!exists) {
+      page.show('/', {message: 'room doesn\'t exist'})
+      return
+    }
+    ctx.room = new Room(ctx.params.room, ctx.app)
+    app.onjoin = Function.prototype
+    next()
+  }
+  app.io.emit('joinroom', ctx.params.room)
 }
 
 export function exit(ctx, next) {
-  ctx.room.exit()
-  ctx.room = (ctx.room.destroy(), null)
+  if (ctx.room) {
+    ctx.room.leave(ctx)
+    ctx.room = (ctx.room.destroy(), null)
+  }
   next()
 }
