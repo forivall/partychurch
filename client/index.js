@@ -154,7 +154,7 @@ function render(template) {
 }
 page('/', render(homeTemplate), home.enter, done)
 page.exit('/', home.exit)
-page('/:room', render(roomTemplate), room.enter, done)
+page('/:room', room.allowed, render(roomTemplate), room.enter, done)
 page.exit('/:room', room.exit)
 page.redirect('*', '/')
 

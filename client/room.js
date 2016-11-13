@@ -174,18 +174,21 @@ export class Room extends EventSubscriber {
   }
 }
 
-export function enter(ctx, next) {
+export function allowed(ctx, next) {
   const app = ctx.app
   app.onjoin = (exists) => {
+    app.onjoin = Function.prototype
     if (!exists) {
       page.show('/', {message: 'room doesn\'t exist'})
       return
     }
-    ctx.room = new Room(ctx.params.room, ctx.app)
-    app.onjoin = Function.prototype
     next()
   }
   app.io.emit('joinroom', ctx.params.room)
+}
+
+export function enter(ctx, next) {
+  ctx.room = new Room(ctx.params.room, ctx.app)
 }
 
 export function exit(ctx, next) {
