@@ -90,7 +90,7 @@ export class Room extends EventSubscriber {
 
   join() {
     debug('join')
-    this.io.emit('join', this.name)
+    this.io.emit('join', 'jpg')
   }
 
   onSubmitForm(event) {
