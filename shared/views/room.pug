@@ -4,9 +4,13 @@ main.room
     if hostFingerprint === null
       include password.pug
     else
-      //- 
+      //-
       .broadcaster-video.displayed
         include video-container.pug
+        p
+        .broadcast-meta
+          .identicon(aria-hidden=true)
+          time
   #message-pane
     ul#message-list.shadow-1
 footer#message-input

@@ -53,6 +53,7 @@
     "express": "^4.9.8",
     "filmstrip2gif": "^1.0.1",
     "page": "^1.7.1",
+    "password-generator": "^2.0.2",
     "postcss": "^5.0.8",
     "prepare-response": "^1.1.2",
     "pug": "^2.0.0-beta6",

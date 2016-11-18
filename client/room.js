@@ -9,6 +9,7 @@ import captureFrames from './capture-frames'
 import createCharCounter from './char-counter'
 import EventSubscriber from './event-subscriber'
 import initMessageList from './message'
+import initBroadcastPane from './broadcast'
 import initProgressSpinner from './progress'
 
 const debug = createDebug('partychurch:room')
@@ -16,11 +17,13 @@ const debug = createDebug('partychurch:room')
 export class Room extends EventSubscriber {
   constructor(name, app) {
     super()
-    this.onSubmitForm = this.onSubmitForm.bind(this)
+    this.onSubmitMessage = this.onSubmitMessage.bind(this)
     this.onAck = this._bindHandler(this.onAck)
     this.leave = this._bindHandler(this.leave)
     this.onChat = this._bindHandler(this.onChat)
     this.onActive = this._bindHandler(this.onActive)
+    this.onBroadcast = this._bindHandler(this.onBroadcast)
+    this.onBroadcaster = this._bindHandler(this.onBroadcaster)
 
     this.name = name
     this.io = createClient(`/room/${this.name}`)
@@ -38,6 +41,11 @@ export class Room extends EventSubscriber {
       analytics
     )
 
+    this.broadcastPane = initBroadcastPane(
+      document.querySelector('#broadcast-pane'),
+      analytics
+    )
+
     this.messageInput = document.querySelector('#message')
     this.messageInput.readOnly = true
 
@@ -51,11 +59,13 @@ export class Room extends EventSubscriber {
     this.awaitingAck = null
     this.sendTime = 0
 
-    this.messageForm = document.querySelector('form')
-    this.messageForm.addEventListener('submit', this.onSubmitForm)
+    this.messageForm = document.querySelector('#message-form')
+    this.messageForm.addEventListener('submit', this.onSubmitMessage)
 
     this.listenTo(this.io, 'ack', this.onAck)
     this.listenTo(this.io, 'chat', this.onChat)
+    this.listenTo(this.io, 'broadcast', this.onBroadcast)
+    this.listenTo(this.io, 'broadcaster', this.onBroadcaster)
     this.listenTo(this.io, 'active', this.onActive)
 
     debug('connecting')
@@ -77,7 +87,7 @@ export class Room extends EventSubscriber {
     this.activeUsers = null
     this.messageList.destroy()
     this.charCounter.destroy()
-    this.messageForm.removeEventListener('submit', this.onSubmitForm)
+    this.messageForm.removeEventListener('submit', this.onSubmitMessage)
     this.cameraPreview.destroy()
   }
 
@@ -93,7 +103,7 @@ export class Room extends EventSubscriber {
     this.io.emit('join', 'jpg')
   }
 
-  onSubmitForm(event) {
+  onSubmitMessage(event) {
     event.preventDefault()
 
     if (this.awaitingAck) return
@@ -171,6 +181,14 @@ export class Room extends EventSubscriber {
 
   onActive(numActive) {
     this.activeUsers.count = numActive
+  }
+
+  onBroadcast(broadcast) {
+    this.broadcastPane.onBroadcast(broadcast)
+  }
+
+  onBroadcaster(broadcaster) {
+    this.broadcastPane.onBroadcaster(broadcaster)
   }
 }
 

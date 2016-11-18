@@ -9,6 +9,10 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+[aria-hidden] {
+  display: none;
+}
+
 body {
   background-color: #ECECEC;
   color: rgba(0, 0, 0, 0.87);

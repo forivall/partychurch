@@ -1,3 +1,4 @@
+// TODO: move this into a pug mixin
 function genFunc(name) {
   return color => {
     const div = document.createElement('div')

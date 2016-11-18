@@ -1,5 +1,6 @@
 import 'waypoints/lib/noframework.waypoints'
 import filmstrip2gif from 'filmstrip2gif'
+import EventSubscriber from './event-subscriber'
 import createIdenticon from './identicon'
 import icons from './icons'
 import createDropdown from './dropdown'
@@ -36,7 +37,6 @@ class Message {
     this.timestamp = this.root.querySelector('time')
     // placeholder div so it can be replaced with the real thing when bound
     this.identicon = this.root.querySelector('.identicon')
-    this.muteButton = this.root.querySelector('.menu button')
     this.messageOverflow = this.root.querySelector('.message-overflow')
 
     // generate icons where needed
@@ -197,8 +197,9 @@ class Message {
   }
 }
 
-class MessageList {
+class MessageList extends EventSubscriber {
   constructor(listElem, muteSet, tracker) {
+    super()
     this._onThemeChange = this._onThemeChange.bind(this)
 
     this.elem = listElem
@@ -210,7 +211,7 @@ class MessageList {
     this._mutes = muteSet
     this._tracker = tracker
 
-    theme.on('themeChange', this._onThemeChange)
+    this.listenTo(theme, 'themeChange', this._onThemeChange)
   }
 
   addMessage(chat, removeOverLimit = true) {
@@ -268,7 +269,7 @@ class MessageList {
       message.unbind()
       message.dispose()
     }
-    theme.removeListener('themeChange', this._onThemeChange)
+    super.destroy()
   }
 
   _recycle(messages) {

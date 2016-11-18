@@ -43,6 +43,10 @@ export class Tracker {
     this._sendEvent('messages', 'saveGif')
   }
 
+  onSaveBroadcastGif() {
+    this._sendEvent('broadcast', 'saveGif')
+  }
+
   onMessageCaptureError(errString) {
     this._sendEvent('messages', 'captureError', errString)
   }
