@@ -1,21 +1,21 @@
 
 main.room
   #broadcast-pane
+    .broadcaster-video.displayed
+      include video-container.pug
+      .preview-container(aria-hidden=true).shadow-1.camera-enabled
+        video#broadcast-preview
+      p
+      .broadcast-meta
+        .identicon(aria-hidden=true)
+        time
     if hostFingerprint === null
       include password.pug
-    else
-      //-
-      .broadcaster-video.displayed
-        include video-container.pug
-        p
-        .broadcast-meta
-          .identicon(aria-hidden=true)
-          time
   #message-pane
     ul#message-list.shadow-1
 footer#message-input
-  div.preview-container.shadow-1.camera-enabled
-    div.camera-disabled-message
+  .preview-container.shadow-1.camera-enabled
+    .camera-disabled-message
       span.camera-disabled-icon.icon-invert.material-icons videocam_off
       span.camera-disabled-text Please enable your webcam
     video#preview

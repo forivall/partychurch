@@ -23,39 +23,60 @@ function equalsNormalizedFacing(desired, check) {
 }
 
 class StreamResult {
-  constructor(video, stream, url, hasFrontAndRear, facing) {
-    this.video = video
+  constructor(stream, hasFrontAndRear, facing) {
     this.stream = stream
-    this.url = url
+    this.url = null
     this.hasFrontAndRear = hasFrontAndRear
     this.facing = facing
     this.stopped = false
   }
 
-  stop() {
+  play(video, cb) {
+    video.autoplay = true
+    if (video.mozSrcObject) {
+      video.mozSrcObject = this.stream
+    } else {
+      if (this.url === null) {
+        this.url = window.URL.createObjectURL(this.stream)
+      }
+      video.src = this.url
+    }
+
+    video.addEventListener('loadeddata', dataLoaded)
+
+    function dataLoaded() {
+      video.removeEventListener('loadeddata', dataLoaded)
+      if (cb) cb()
+    }
+  }
+
+  stop(video, secondary = false) {
     if (this.stopped) return
 
-    if (this.url && this.video.src === this.url) {
-      this.video.pause()
-      this.video.removeAttribute('src')
-      window.URL.revokeObjectURL(this.url)
-      this.url = null
-    } else if (this.video.mozSrcObject && this.video.mozSrcObject === this.stream) {
-      this.video.pause()
-      this.video.removeAttribute('src')
+    if (this.url && video.src === this.url) {
+      video.pause()
+      video.removeAttribute('src')
+      if (!secondary) {
+        window.URL.revokeObjectURL(this.url)
+        this.url = null
+      }
+    } else if (video.mozSrcObject && video.mozSrcObject === this.stream) {
+      video.pause()
+      video.removeAttribute('src')
     }
 
-    for (const track of this.stream.getTracks()) {
-      track.stop()
+    if (!secondary) {
+      for (const track of this.stream.getTracks()) {
+        track.stop()
+      }
     }
-    this.video = null
     this.stream = null
     this.stopped = true
   }
 }
 
 
-function initWebrtc(video, width, height, facing, cb) {
+function initWebrtc({width, height, facing}, cb) {
   if (!getUserMedia) {
     cb(new Error('Browser doesn\'t support WebRTC'))
     return
@@ -108,22 +129,9 @@ function initWebrtc(video, width, height, facing, cb) {
   }
 
   function success(stream) {
-    let url
-    video.autoplay = true
-    if (video.mozSrcObject) {
-      video.mozSrcObject = stream
-    } else {
-      url = window.URL.createObjectURL(stream)
-      video.src = url
-    }
-
-    video.addEventListener('loadeddata', dataLoaded)
-
-    function dataLoaded() {
-      video.removeEventListener('loadeddata', dataLoaded)
-      cb(null,
-          new StreamResult(video, stream, url, hasFrontAndRear, requestedFacing ? facing : null))
-    }
+    return cb(null,
+      new StreamResult(stream, hasFrontAndRear, requestedFacing ? facing : null)
+    )
   }
 
   function failure(err) {

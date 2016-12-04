@@ -18,6 +18,7 @@ export class Room extends EventSubscriber {
   constructor(name, app) {
     super()
     this.onSubmitMessage = this.onSubmitMessage.bind(this)
+    this.onSubmitPassword = this.onSubmitPassword.bind(this)
     this.onAck = this._bindHandler(this.onAck)
     this.leave = this._bindHandler(this.leave)
     this.onChat = this._bindHandler(this.onChat)
@@ -41,11 +42,6 @@ export class Room extends EventSubscriber {
       analytics
     )
 
-    this.broadcastPane = initBroadcastPane(
-      document.querySelector('#broadcast-pane'),
-      analytics
-    )
-
     this.messageInput = document.querySelector('#message')
     this.messageInput.readOnly = true
 
@@ -62,6 +58,11 @@ export class Room extends EventSubscriber {
     this.messageForm = document.querySelector('#message-form')
     this.messageForm.addEventListener('submit', this.onSubmitMessage)
 
+    this.passwordInput = document.querySelector('#broadcaster-password')
+
+    this.passwordForm = document.querySelector('#broadcaster-password-form')
+    this.passwordForm.addEventListener('submit', this.onSubmitPassword)
+
     this.listenTo(this.io, 'ack', this.onAck)
     this.listenTo(this.io, 'chat', this.onChat)
     this.listenTo(this.io, 'broadcast', this.onBroadcast)
@@ -76,7 +77,12 @@ export class Room extends EventSubscriber {
     }
 
     this.cameraPreview = createCameraPreview(
-      document.querySelector('#preview').parentNode, analytics
+      document.querySelector('#preview').parentNode
+    )
+
+    this.broadcastPane = initBroadcastPane(
+      document.querySelector('#broadcast-pane'),
+      this.cameraPreview
     )
   }
 
@@ -147,6 +153,14 @@ export class Room extends EventSubscriber {
       event.initEvent('change', false, true)
       this.messageInput.dispatchEvent(event)
     }).on('progress', percentDone => this.progressSpinner.setValue(percentDone))
+  }
+
+  onSubmitPassword(event) {
+    event.preventDefault()
+
+    this.io.emit('auth', this.passwordInput.value)
+
+    console.log(event)
   }
 
   onAck(ack) {

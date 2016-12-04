@@ -118,7 +118,7 @@ app.use(serveStatic('public'))
 app.get('/:room', setTemplateVars, (req, res) => {
   Object.assign(req.templateVars, {
     isNew: true,
-    hostId: null,
+    hostFingerprint: null,
   })
   res.render('room', req.templateVars)
 })

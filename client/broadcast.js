@@ -1,8 +1,11 @@
 import createDebug from 'debug'
 import filmstrip2gif from 'filmstrip2gif'
+import analytics from './analytics'
+import createCameraPreview from './camera-preview'
 import EventSubscriber from './event-subscriber'
 import createIdenticon from './identicon'
 import icons from './icons'
+import getFingerprint from './fingerprint'
 import localeTime from './locale-time'
 import theme from './theme'
 import {BLANK_IMAGE} from './constants'
@@ -14,17 +17,20 @@ const FILMSTRIP_DURATION = 0.92
 const FILMSTRIP_HORIZONTAL = false
 
 class Broadcast extends EventSubscriber {
-  constructor(elem, tracker) {
+  constructor(elem, cameraPreview) {
     super()
+    this.refreshIdenticon.bind(this)
+
     this._destroyed = false
     this._userId = null
+    this._broadcaster = null
     this._srcUrl = null
     this._animationRequest = null
-    this._tracker = tracker
 
     this.elem = elem
 
     this.videoContainer = this.elem.querySelector('.video-container')
+    this.previewContainer = this.elem.querySelector('.preview-container')
     this.filmstrip = this.elem.querySelector('.filmstrip')
     this.saveButton = this.elem.querySelector('.save')
     this.chatText = this.elem.querySelector('p')
@@ -36,7 +42,12 @@ class Broadcast extends EventSubscriber {
     this.saveButton.appendChild(icons.save('invert'))
 
     this.saveButton.addEventListener('click', () => this.saveGif())
-    this.listenTo(theme, 'themeChange', this.refreshIdenticon.bind(this))
+    theme.on('themeChange', this.refreshIdenticon)
+    this.subs.push({destroy() {theme.off('themeChange', this.refreshIdenticon)}})
+
+    this.cameraPreview = createCameraPreview(
+      document.querySelector('#broadcast-preview').parentNode, cameraPreview
+    )
   }
 
   onBroadcast(broadcast) {
@@ -90,6 +101,7 @@ class Broadcast extends EventSubscriber {
 
   onBroadcaster(broadcaster) {
     debug('broadcaster %j', broadcaster)
+    this.toggleBroadcasterTools(broadcaster === getFingerprint())
   }
 
   destroy() {
@@ -138,9 +150,25 @@ class Broadcast extends EventSubscriber {
   }
 
   trackSaveGif() {
-    this._tracker.onSaveBroadcastGif()
+    analytics.onSaveBroadcastGif()
+  }
+
+  // --- broadcaster tools ---
+
+  toggleBroadcasterTools(on) {
+    toggle(this.videoContainer, on)
+    toggle(this.previewContainer, on)
   }
 }
+
+function toggle(el, on, attr = 'aria-hidden', value = '') {
+  if (on) {
+    el.setAttribute(attr, value)
+  } else {
+    el.removeAttribute(attr)
+  }
+}
+
 
 export default function createBroadcastPane() {
   return new Broadcast(...arguments)

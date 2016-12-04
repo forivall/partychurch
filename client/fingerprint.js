@@ -3,7 +3,15 @@ import cuid from 'cuid'
 const KEY = 'fingerprint'
 const VERSION = 1
 
+let value
+
 export default function getFingerprint() {
+  if (value) return value
+  value = _getFingerprint()
+  return value
+}
+
+function _getFingerprint() {
   const saved = window.localStorage.getItem(KEY)
   if (!saved) {
     return generateAndSave()

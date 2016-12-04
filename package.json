@@ -12,6 +12,7 @@
     "lint-pug": "pug-lint views client/views",
     "prepublish": "npm run test",
     "start": "node index.js",
+    "dev": "DEBUG=partychurch:*,socket.io:server nodemon -w lib -w index.js -w server.js -w shared -w views -e js,pug",
     "test": "mocha -R spec --compilers js:test-compiler --recursive test/"
   },
   "repository": {

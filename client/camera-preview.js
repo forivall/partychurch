@@ -1,8 +1,11 @@
+import { EventEmitter } from 'events'
+import analytics from './analytics'
 import initWebrtc from './init-webrtc'
 import icons from './icons'
 
-class CameraPreview {
-  constructor(previewContainer, tracker) {
+class CameraPreview extends EventEmitter {
+  constructor(previewContainer, primaryPreview) {
+    super()
     this.onSwitchCamera = this.onSwitchCamera.bind(this)
     this.onStorage = this.onStorage.bind(this)
 
@@ -11,10 +14,21 @@ class CameraPreview {
     this.facing = null
     this.switchButton = null
     this.videoStream = null
-    this.tracker = tracker
 
-    this.loadFacing()
-    window.addEventListener('storage', this.onStorage)
+    // TODO: split out video service from dom element
+    if (primaryPreview) {
+      this.primary = primaryPreview
+      this.primary.on('playing', () => {
+        this.primary.videoStream.play(this.videoElem)
+      })
+
+      this.primary.on('stopped', () => {
+        this.primary.videoStream.stop(this.videoElem, true)
+      })
+    } else {
+      this.loadFacing()
+      window.addEventListener('storage', this.onStorage)
+    }
   }
 
   destroy() {
@@ -22,6 +36,8 @@ class CameraPreview {
     if (this.switchButton) {
       this.switchButton.removeEventListener('click', this.onSwitchCamera)
     }
+
+    this.removeAllListeners()
   }
 
   loadFacing() {
@@ -35,7 +51,8 @@ class CameraPreview {
   initializeCamera(attempt = 0) {
     const initTime = Date.now()
     if (this.videoStream) {
-      this.videoStream.stop()
+      this.videoStream.stop(this.videoElem)
+      this.emit('stopped')
       this.videoStream = null
     }
 
@@ -44,11 +61,19 @@ class CameraPreview {
       timer = null
     }, 15000)
 
-    initWebrtc(this.videoElem, 200, 150, this.facing, (err, stream) => {
-      if (timer) {
-        clearTimeout(timer)
-        timer = null
-      }
+    function clearTimer() {
+      if (!timer) return
+
+      clearTimeout(timer)
+      timer = null
+    }
+
+    initWebrtc({
+      width: 200,
+      height: 150,
+      facing: this.facing
+    }, (err, stream) => {
+      clearTimer()
       if (err) {
         if (attempt < 2 && Date.now() - initTime < 200) {
           // Chrome has a weird problem where if you try to do a getUserMedia request too early, it
@@ -65,15 +90,20 @@ class CameraPreview {
         this.container.classList.remove('camera-enabled')
         console.log('error initializing camera preview:')
         console.dir(err)
-        this.tracker.onCameraError(err.name || err.message)
+        analytics.onCameraError(err.name || err.message)
         return
       }
 
       this.container.classList.add('camera-enabled')
-      this.tracker.onCameraInitialized()
-
       this.videoStream = stream
-      this.updateSwitchButton()
+
+      this.emit('playing')
+
+      stream.play(this.videoElem, () => {
+        analytics.onCameraInitialized()
+
+        this.updateSwitchButton()
+      })
     })
   }
 
@@ -102,7 +132,7 @@ class CameraPreview {
   onSwitchCamera() {
     this.facing = this.facing === 'front' ? 'rear' : 'front'
     window.localStorage.setItem('cameraFacing', this.facing)
-    this.tracker.onCameraFacingChange(this.facing)
+    analytics.onCameraFacingChange(this.facing)
     this.initializeCamera()
   }
 
