@@ -5,9 +5,11 @@ import path from 'path'
 import fs from 'fs'
 import socketIo from 'socket.io'
 import browserify from 'browserify-middleware'
+import createDebug from 'debug'
 import bundleCollapser from 'bundle-collapser/plugin'
 import pugify from 'pugify'
 import serveStatic from 'serve-static'
+import stylus from 'stylus'
 import serveCss from './lib/serve-css'
 import canonicalHost from 'canonical-host'
 import userCounter from './lib/user-counter'
@@ -16,6 +18,8 @@ import ChatSockets from './lib/chat-sockets'
 import config from './conf.json'
 
 import {BLANK_IMAGE} from './client/constants'
+
+const debug = createDebug('partychurch:server')
 
 const userIdKey = config.idKey
 if (!userIdKey) {
@@ -92,7 +96,8 @@ const browserifyOpts = {
     }
   }]
 }
-if (process.env.NODE_ENV === 'production') {
+const PRODUCTION = process.env.NODE_ENV === 'production'
+if (PRODUCTION) {
   browserifyOpts.plugins.push({ plugin: bundleCollapser })
 }
 
@@ -105,8 +110,25 @@ function setTemplateVars(req, res, next) {
   next()
 }
 
+app.use(stylus.middleware({
+  src: path.join(__dirname, 'styl'),
+  dest: path.join(__dirname, 'tmp'),
+  compile(str, path) {
+    debug('styl compile!')
+    const s = stylus(str)
+    .set('filename', path)
+    if (!PRODUCTION) {
+      s
+      .render((err, css) => {
+        if (err) console.error(err.message || err)
+      })
+    }
+    return s
+  }
+}))
+
 app.get('/client.js', browserify(__dirname + '/client/index.js', browserifyOpts))
-app.get('/styles.css', serveCss(__dirname + '/css/styles.css'))
+app.get('/styles.css', serveCss(__dirname + '/tmp/styles.css'))
 
 // TODO: use pug-linker directly to include child pug templates
 app.get('/', setTemplateVars, (req, res) => {
@@ -122,7 +144,6 @@ app.get('/:room', setTemplateVars, (req, res) => {
   })
   res.render('room', req.templateVars)
 })
-
 
 const readyPromise = new Promise((resolve, reject) => {
   userCounter(io)

@@ -64,6 +64,7 @@
     "sha1": "^1.1.0",
     "socket.io": "^1.1.0",
     "socket.io-client": "^1.1.0",
+    "stylus": "^0.54.5",
     "tokenthrottle": "^1.1.0",
     "twitter-text": "^1.10.0",
     "waypoints": "^3.1.1"
@@ -78,7 +79,8 @@
     "mocha-eslint": "^2.1.1",
     "proxyquire": "^1.7.2",
     "pug-lint": "^2.3.0",
-    "stream-spigot": "^3.0.5"
+    "stream-spigot": "^3.0.5",
+    "stylint": "^1.5.8"
   },
   "browserify": {
     "transform": [
