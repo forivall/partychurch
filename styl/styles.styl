@@ -27,76 +27,48 @@ body
     background-color: #212121
     color: #ffffff
 
-
-
 b
   font-weight: 500
-
 
 h1, h2, h3, h4, h5, h6
   font-weight: 400
   text-rendering: optimizeLegibility
   margin: 8px 0
 
-
 h1
   font-size: 45px
   line-height: 64px
   color: rgba(0, 0, 0, 0.54)
 
-
 h2
   font-size: 34px
   line-height: 40px
 
-
 h3
   font-size: 24px
   line-height: 32px
-
 
 h4
   font-size: 20px
   font-weight: 500
   letter-spacing: 0.005em
 
-
 h5
   font-size: 16px
   letter-spacing: 0.010em
   line-height: 24px
-
 
 h6
   font-size: 14px
   letter-spacing: 0.020em
   color: rgba(0, 0, 0, 0.54)
 
-
-.dark
-  h1, h6
-    color: #ffffff
-
-
-
 a, a:visited, a:hover, a:focus, a:active
   font-weight: inherit
   color: #F06292
 
-
-.dark
-  a,
-  a:visited,
-  a:hover,
-  a:focus,
-  a:active
-    color: #F48FB1
-
-
-
 button
   font-family: 'Roboto', 'sans-serif'
-
 
 header
   background-color: #F06292
@@ -118,33 +90,22 @@ header
     text-rendering: optimizeLegibility
     margin: auto 1em
 
-
   .actions
     display: flex
-
-
 
 .icon-invert.icon-invert
   color: #ffffff
   &:disabled
     color: rgba(255, 255, 255, 0.3)
 
-
-
 .icon-normal.icon-normal
   color: rgba(0, 0, 0, 0.54)
-
-
-.dark .icon-normal.icon-normal
-  color: #ffffff
-
 
 #active-users
   font-size: 16px
   margin: auto
   min-width: 48px
   text-align: center
-
 
 .dropdown
   width: 48px
@@ -153,27 +114,15 @@ header
   overflow: visible
   position: relative
 
-
-.dropdown .toggle
-  padding: 12px
-  background-color: rgba(0, 0, 0, 0)
-  border: none
-  outline: none
-
-
-.dark .dropdown .toggle
-  /* necessary to be "more specific" than the dark dropdown button styles */
-  background-color: rgba(0, 0, 0, 0)
-
+  .toggle
+    padding: 12px
+    background-color: rgba(0, 0, 0, 0)
+    border: none
+    outline: none
 
 .dropdown .toggle:hover
   background-color: rgba(0, 0, 0, 0.12)
   cursor: pointer
-
-
-.dark .dropdown .toggle:hover
-  background-color: rgba(255, 255, 255, 0.12)
-
 
 .dropdown .menu
   border-radius: 2px
@@ -193,13 +142,11 @@ header
   transition: visibility 0.3s, opacity 0.3s, transform 0.3s
   transition-timing-function: cubic-bezier(.4, 0, .2, 1)
 
-
 .dropdown.active .menu
   opacity: 1
   visibility: visible
 
   transform: scale(1)
-
 
 .dropdown button
   width: 100%
@@ -213,42 +160,23 @@ header
   padding-right: 16px
   text-align: left
 
-
 .dropdown button.material-icons
   font-size: 24px
-
-
-.dark .dropdown button
-  background-color: #424242
-  color: #ffffff
-
 
 .dropdown button:first-child
   border-top-left-radius: 2px
   border-top-right-radius: 2px
 
-
 .dropdown button:last-child
   border-bottom-left-radius: 2px
   border-bottom-right-radius: 2px
-
 
 .dropdown button:hover
   background-color: #eeeeee
   cursor: pointer
 
-
-.dark .dropdown button:hover
-  background-color: #525252
-
-
 .dropdown button:active
   background-color: #dddddd
-
-
-.dark .dropdown button:active
-  background-color: #616161
-
 
 main
   height: 100%
@@ -258,47 +186,34 @@ main
   min-width: 640px
   max-width: 1400px
 
-
-main.room
-  margin: 56px auto 158px
-  display: flex
-
+  &.room
+    margin: 56px auto 158px
+    display: flex
 
 #broadcast-pane
   width: 50%
 
-
 #message-pane
   width: 50%
-
 
 #message-list
   border-radius: 2px
   list-style-type: none
 
-
-#message-list li
-  background-color: #fafafa
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12)
-  display: flex
-  font-size: 20px
-  padding: 0px
-
-
-.dark #message-list li
-  background-color: #303030
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12)
-
+  li
+    background-color: #fafafa
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12)
+    display: flex
+    font-size: 20px
+    padding: 0px
 
 #message-list li:first-child
   border-top-left-radius: 2px
   border-top-right-radius: 2px
 
-
 #message-list li:first-child .video-container
   border-top-left-radius: 2px
   overflow: hidden
-
 
 #message-list li:last-child
   border-bottom-left-radius: 2px
@@ -306,12 +221,10 @@ main.room
   overflow: hidden
   border-bottom: none
 
-
 #message-list li:last-child .video-container
   border-bottom-left-radius: 2px
   overflow: hidden
   margin-bottom: 0
-
 
 #message-list li .video-container
   width: 200px
@@ -321,7 +234,6 @@ main.room
   overflow: hidden
   flex-shrink: 0
 
-
 #broadcast-pane .video-container
   width: 100%
   padding-bottom: 75%
@@ -329,8 +241,6 @@ main.room
   position: relative
   overflow: hidden
   flex-shrink: 0
-
-
 
 .video-container .filmstrip
   display: none
@@ -341,17 +251,14 @@ main.room
   left: 0
   backface-visibility: hidden
 
-
 .displayed .video-container .filmstrip
   display: block
   animation: filmstrip 0.92s infinite
   transform: translateZ(0)
 
-
 .backgrounded .displayed .video-container .filmstrip
   display: none
   animation: none
-
 
 .video-container .save, .video-container .save:focus
   position: absolute
@@ -369,24 +276,19 @@ main.room
   transition: visibility 0.4s, opacity 0.4s, background-color 0.4s
   transition-timing-function: cubic-bezier(.4, 0, .2, 1)
 
-
 .video-container:hover .save
   visibility: visible
   opacity: 0.95
-
 
 .save:hover
   background-color: #F86A9A
   cursor: pointer
 
-
 .save:active
   background-color: #FF71A1
 
-
 .save[disabled]
   background-color: #E91E63
-
 
 #message-list li p
   flex: 1 1
@@ -396,7 +298,6 @@ main.room
   overflow-wrap: break-word
   overflow: hidden
 
-
 #message-list li .message-meta
   flex-shrink: 0
   display: flex
@@ -405,56 +306,37 @@ main.room
   justify-content: space-between
   padding: 0 0 4px
 
-
 .message-overflow
   display: inline-block
-
 
 .message-meta .dropdown
   /* compensate for the icon being higher and not looking like it occupies the lower space */
   margin-bottom: -24px
 
-
 .dropdown .toggle.message-overflow
   padding: 0
-
 
 .dropdown .toggle.message-overflow:hover
   background-color: transparent
 
-
 .dropdown .toggle.message-overflow:active
   background-color: transparent
-
 
 .message-overflow > .icon
   margin-left: 24px
   margin-bottom: 8px
 
-
 .message-overflow:hover
   cursor: pointer
-
 
 .message-overflow:disabled:hover
   cursor: default
 
-
 .message-overflow:hover .icon, .message-overflow:active .icon
   color: rgba(0, 0, 0, 0.87)
 
-
 .message-overflow:disabled:disabled .icon
   color: rgba(0, 0, 0, 0.38)
-
-
-.dark .message-overflow:hover .icon, .dark .message-overflow:active .icon
-  color: rgba(255, 255, 255, 0.7)
-
-
-.dark .message-overflow:disabled:disabled .icon
-  color: rgba(255, 255, 255, 0.3)
-
 
 .identicon
   width: 38px
@@ -464,28 +346,17 @@ main.room
   margin: 1px 8px 1px 2px
   padding: 3px
 
-
-.dark .identicon
-  border-color: rgba(255, 255, 255, 0.12)
-
-
 .identicon .block
   display: inline-block
   float: left
   width: 20%
   height: 20%
 
-
 .message-meta time
   color: rgba(0, 0, 0, 0.54)
   font-size: 16px
   padding: 0
   margin-right: 8px
-
-
-.dark .message-meta time
-  color: rgba(255, 255, 255, 0.7)
-
 
 #message-input
   display: flex
@@ -499,10 +370,8 @@ main.room
   padding: 0
   width: 1400px
 
-
 #message-input .progress
   position: absolute
-
 
 .preview-container
   background: #000000
@@ -512,11 +381,9 @@ main.room
   width: 200px
   flex-shrink: 0
 
-
 .preview-container video
   height: 100%
   width: 100%
-
 
 .preview-container .switch-camera, .preview-container .switch-camera:focus
   position: absolute
@@ -535,20 +402,16 @@ main.room
   transition: visibility 0.4s, opacity 0.4s, background-color 0.4s
   transition-timing-function: cubic-bezier(.4, 0, .2, 1)
 
-
 .preview-container:hover .switch-camera
   visibility: visible
   opacity: 0.95
-
 
 .switch-camera:hover
   background-color: #F86A9A
   cursor: pointer
 
-
 .switch-camera:active
   background-color: #FF71A1
-
 
 .camera-disabled-message
   position: absolute
@@ -565,19 +428,15 @@ main.room
   align-items: center
   text-align: center
 
-
 .camera-disabled-icon
   margin-bottom: 8px
   font-size: 48px
 
-
 .camera-disabled-text
   font-size: 20px
 
-
 .camera-enabled .camera-disabled-message
   display: none
-
 
 #message-form
   align-self: flex-end
@@ -587,11 +446,6 @@ main.room
   flex: 1
   margin: 0 8px
   overflow: hidden
-
-
-.dark #message-form
-  background-color: #303030
-
 
 #message
   background: #fafafa
@@ -611,43 +465,23 @@ main.room
   transition: border-color .3s
   transition-timing-function: cubic-bezier(.4, 0, .2, 1)
 
-
-.dark #message
-  background: #303030
-  border-color: rgba(255, 255, 255, 0.12)
-  color: #ffffff
-
-
 #message:hover
   border-color: rgba(0, 0, 0, 0.54)
-
-
-.dark #message:hover
-  border-color: rgba(255, 255, 255, 0.3)
-
 
 #message:active:active, #message:focus:focus
   border-color: #F06292
   border-width: 2px
   padding: 4px 2px 3px 2px /* account for extra border size */
 
-
 #message.full:active:active, body #message.full:focus:focus
   border-color: #D32F2F
-
 
 /* lol css gods look at me now */
 #message[readonly][readonly][readonly]
   border-color: #CB7A95
 
-
 #message[readonly]
   color: rgba(0, 0, 0, 0.38)
-
-
-.dark #message[readonly]
-  color: rgba(255, 255, 255, 0.3)
-
 
 #char-counter
   color: rgba(0, 0, 0, 0.54)
@@ -662,23 +496,12 @@ main.room
   transition: visiblity .3s, opacity .3s, color .3s
   transition-timing-function: cubic-bezier(.4, 0, .2, 1)
 
-
-.dark #char-counter
-  color: rgba(255, 255, 255, 0.7)
-
-
 #char-counter.full
   color: #F44336
-
-
-.dark #char-counter.full
-  color: #C62828
-
 
 #message:active + #char-counter, #message:focus + #char-counter
   visibility: visible
   opacity: 1
-
 
 #send
   border: 0
@@ -689,20 +512,16 @@ main.room
   padding-left: 16px
   padding-right: 16px
 
-
 #send:hover
   background-color: #F86A9A
   cursor: pointer
 
-
 #send:active
   background-color: #FF71A1
-
 
 #send:disabled:disabled
   cursor: default
   background-color: #CB7A95
-
 
 .progress
   display: block
@@ -717,11 +536,9 @@ main.room
   transition: visibility .3s, opacity .3s
   transition-timing-function: cubic-bezier(.4,0,.2,1)
 
-
 .progress.visible
   visibility: visible
   opacity: 1
-
 
 .progress .circle .mask, .progress .circle .fill
   width: 48px
@@ -729,20 +546,16 @@ main.room
   position: absolute
   border-radius: 50%
 
-
 .progress .circle .mask, .progress .circle .fill
   backface-visibility: hidden
   transition: transform .3s
 
-
 .progress .circle .mask
   clip: rect(0px, 48px, 48px, 24px)
-
 
 .progress .circle .mask .fill
   clip: rect(0px, 24px, 48px, 0px)
   background-color: #F06292
-
 
 .progress .inset
   width: 36px
@@ -756,19 +569,9 @@ main.room
   justify-content: center
   align-items: center
 
-
-.dark .progress .inset
-  background-color: #303030
-
-
 .progress .text
   color: rgba(0, 0, 0, 0.87)
   overflow: hidden
-
-
-.dark .progress .text
-  color: #ffffff
-
 
 .dialog-scrim
   position: fixed
@@ -781,10 +584,8 @@ main.room
   transition: opacity cubic-bezier(.4, 0, .2, 1) 300ms
   opacity: 1
 
-
 .dialog-scrim.entering, .dialog-scrim.leaving
   opacity: 0
-
 
 .dialog-container
   position: fixed
@@ -799,7 +600,6 @@ main.room
   z-index: 21
   overflow: hidden
 
-
 .dialog
   background-color: #fafafa
   width: 672px
@@ -810,22 +610,14 @@ main.room
   transition: transform cubic-bezier(0, 0, .2, 1) 400ms
   transform: translateY(0)
 
-
 .dialog.entering
   transform: translateY(100vh)
-
 
 .dialog.will-leave
   transition: all cubic-bezier(.4, 0, 1, 1) 400ms
 
-
 .dialog.leaving
   transform: translateY(-100vh)
-
-
-.dark .dialog
-  background-color: #424242
-
 
 .dialog > h2:first-child
   margin-top: 0
@@ -833,28 +625,19 @@ main.room
   margin-right: 8px
   display: inline-block
 
-
 .dialog > h2 + .secondary
   display: inline-block
 
-
 .dialog ul
   margin-left: 20px
-
 
 .dialog li
   padding-left: 8px
   margin-top: 8px
   margin-bottom: 8px
 
-
 .secondary
   color: rgba(0, 0, 0, 0.54)
-
-
-.dark .secondary
-  color: rgba(255, 255, 255, 0.70)
-
 
 .flex-grow
   align-items: flex-end
@@ -862,48 +645,45 @@ main.room
   flex-direction: row
   flex: 1
 
-
 .shadow-1
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .14),
-      0 2px 2px 0 rgba(0,0,0,.098),
-      0 1px 5px 0 rgba(0,0,0,.084)
-
+  box-shadow:
+    0 3px 1px -2px rgba(0, 0, 0, .14),
+    0 2px 2px 0 rgba(0,0,0,.098),
+    0 1px 5px 0 rgba(0,0,0,.084)
 
 .shadow-2
-  box-shadow: 0 2px 4px -1px rgba(0,0,0,.14),
-      0 4px 5px 0 rgba(0,0,0,.098),
-      0 1px 10px 0 rgba(0,0,0,.084)
-
+  box-shadow:
+    0 2px 4px -1px rgba(0,0,0,.14),
+    0 4px 5px 0 rgba(0,0,0,.098),
+    0 1px 10px 0 rgba(0,0,0,.084)
 
 .shadow-5
-  box-shadow: 0 8px 10px -5px rgba(0,0,0,.14),
-      0 16px 24px 2px rgba(0,0,0,.098),
-      0 6px 30px 5px rgba(0,0,0,.084)
+  box-shadow:
+    0 8px 10px -5px rgba(0,0,0,.14),
+    0 16px 24px 2px rgba(0,0,0,.098),
+    0 6px 30px 5px rgba(0,0,0,.084)
 
+.dark
+  @import 'dark.styl'
 
 @media (max-width: 2000px)
   #message-list
     max-width: 892px
 
-
   #message-input
     max-width: 892px
-
 
 
 @media (max-width: 1460px)
   #message-list
     width: auto
 
-
   #message-input
     width: auto
-
 
   .dialog
     width: 480px
     max-width: 90vw
-
 
 
 @media (max-width: 1000px)
@@ -911,45 +691,35 @@ main.room
     min-width: 0px
     margin-bottom: 110px
 
-
   #message-list li
     font-size: 14px
-
 
   #message-list li .video-container
     height: 102px
     width: 136px
 
-
   .preview-container
     height: 102px
     width: 136px
 
-
   .camera-disabled-icon
     margin-bottom: 4px
-
 
   .camera-disabled-text
     font-size: 15px
 
-
   .message-meta time
     font-size: 12px
-
 
   .identicon
     height: 28px
     width: 28px
 
-
   #char-counter
     display: none
 
-
   #message
     margin-right: 2px
-
 
 
 @keyframes filmstrip
