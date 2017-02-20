@@ -120,63 +120,71 @@ header
     border: none
     outline: none
 
-.dropdown .toggle:hover
-  background-color: rgba(0, 0, 0, 0.12)
-  cursor: pointer
+    :hover
+      background-color: rgba(0, 0, 0, 0.12)
+      cursor: pointer
 
-.dropdown .menu
-  border-radius: 2px
-  min-width: 168px
-  outline: none
-  margin-top: 8px
-  margin-right: 8px
-  position: absolute
-  right: 0px
-  top: 0px
-  opacity: 0
-  visibility: hidden
+  .menu
+    border-radius: 2px
+    min-width: 168px
+    outline: none
+    margin-top: 8px
+    margin-right: 8px
+    position: absolute
+    right: 0px
+    top: 0px
+    opacity: 0
+    visibility: hidden
 
-  transform: scale(0)
-  transform-origin: 100% 0%
+    transform: scale(0)
+    transform-origin: 100% 0%
 
-  transition: visibility 0.3s, opacity 0.3s, transform 0.3s
-  transition-timing-function: cubic-bezier(.4, 0, .2, 1)
+    transition: visibility 0.3s, opacity 0.3s, transform 0.3s
+    transition-timing-function: cubic-bezier(.4, 0, .2, 1)
 
-.dropdown.active .menu
-  opacity: 1
-  visibility: visible
+    ^[-1].active ^[-1..-1]
+      opacity: 1
+      visibility: visible
 
-  transform: scale(1)
+      transform: scale(1)
 
-.dropdown button
-  width: 100%
-  height: 48px
-  outline: none
-  border: none
-  background-color: #ffffff
-  color: rgba(0, 0, 0, 0.87)
-  font-size: 16px
-  padding-left: 16px
-  padding-right: 16px
-  text-align: left
+  button
+    width: 100%
+    height: 48px
+    outline: none
+    border: none
+    background-color: #ffffff
+    color: rgba(0, 0, 0, 0.87)
+    font-size: 16px
+    padding-left: 16px
+    padding-right: 16px
+    text-align: left
 
-.dropdown button.material-icons
-  font-size: 24px
+    &.material-icons
+      font-size: 24px
 
-.dropdown button:first-child
-  border-top-left-radius: 2px
-  border-top-right-radius: 2px
+    &:first-child
+      border-top-left-radius: 2px
+      border-top-right-radius: 2px
 
-.dropdown button:last-child
-  border-bottom-left-radius: 2px
-  border-bottom-right-radius: 2px
+    &:last-child
+      border-bottom-left-radius: 2px
+      border-bottom-right-radius: 2px
 
-.dropdown button:hover
-  background-color: #eeeeee
-  cursor: pointer
+    &:hover
+      background-color: #eeeeee
+      cursor: pointer
 
-.dropdown button:active
-  background-color: #dddddd
+    &:active
+      background-color: #dddddd
+
+
+  .toggle.message-overflow
+    padding: 0
+
+    &:hover, &:active
+      background-color: transparent
+
 
 main
   height: 100%
@@ -193,6 +201,14 @@ main
 #broadcast-pane
   width: 50%
 
+  .video-container
+    width: 100%
+    padding-bottom: 75%
+    margin-bottom: -1px
+    position: relative
+    overflow: hidden
+    flex-shrink: 0
+
 #message-pane
   width: 50%
 
@@ -207,104 +223,98 @@ main
     font-size: 20px
     padding: 0px
 
-#message-list li:first-child
-  border-top-left-radius: 2px
-  border-top-right-radius: 2px
+    &:first-child
+      border-top-left-radius: 2px
+      border-top-right-radius: 2px
 
-#message-list li:first-child .video-container
-  border-top-left-radius: 2px
-  overflow: hidden
+    &:last-child
+      border-bottom-left-radius: 2px
+      border-bottom-right-radius: 2px
+      overflow: hidden
+      border-bottom: none
 
-#message-list li:last-child
-  border-bottom-left-radius: 2px
-  border-bottom-right-radius: 2px
-  overflow: hidden
-  border-bottom: none
+    .video-container
+      width: 200px
+      height: 150px
+      margin-bottom: -1px
+      position: relative
+      overflow: hidden
+      flex-shrink: 0
 
-#message-list li:last-child .video-container
-  border-bottom-left-radius: 2px
-  overflow: hidden
-  margin-bottom: 0
+      ^[-1]:first-child ^[-1..-1]
+        border-top-left-radius: 2px
+        overflow: hidden
 
-#message-list li .video-container
-  width: 200px
-  height: 150px
-  margin-bottom: -1px
-  position: relative
-  overflow: hidden
-  flex-shrink: 0
+      ^[-1]:last-child ^[-1..-1]
+        border-bottom-left-radius: 2px
+        overflow: hidden
+        margin-bottom: 0
 
-#broadcast-pane .video-container
-  width: 100%
-  padding-bottom: 75%
-  margin-bottom: -1px
-  position: relative
-  overflow: hidden
-  flex-shrink: 0
+    p
+      flex: 1 1
+      padding: 8px
 
-.video-container .filmstrip
-  display: none
-  width: 100%
-  height: 1000%
-  position: absolute
-  top: 0
-  left: 0
-  backface-visibility: hidden
+      word-wrap: break-word
+      overflow-wrap: break-word
+      overflow: hidden
 
-.displayed .video-container .filmstrip
-  display: block
-  animation: filmstrip 0.92s infinite
-  transform: translateZ(0)
+    .message-meta
+      flex-shrink: 0
+      display: flex
+      flex-direction: column
+      align-items: flex-end
+      justify-content: space-between
+      padding: 0 0 4px
 
-.backgrounded .displayed .video-container .filmstrip
-  display: none
-  animation: none
+.video-container
+  .filmstrip
+    display: none
+    width: 100%
+    height: 1000%
+    position: absolute
+    top: 0
+    left: 0
+    backface-visibility: hidden
 
-.video-container .save, .video-container .save:focus
-  position: absolute
-  display: block
-  padding: 4px 8px
-  bottom: 8px
-  left: 8px
-  border: 1px solid rgba(0, 0, 0, 0.54)
-  outline: none
-  border-radius: 2px
-  background-color: #F06292
-  opacity: 0
-  visibility: hidden
+  .displayed & .filmstrip
+    display: block
+    animation: filmstrip 0.92s infinite
+    transform: translateZ(0)
 
-  transition: visibility 0.4s, opacity 0.4s, background-color 0.4s
-  transition-timing-function: cubic-bezier(.4, 0, .2, 1)
+    .backgrounded &
+      display: none
+      animation: none
 
-.video-container:hover .save
-  visibility: visible
-  opacity: 0.95
+  .save, .save:focus
+    position: absolute
+    display: block
+    padding: 4px 8px
+    bottom: 8px
+    left: 8px
+    border: 1px solid rgba(0, 0, 0, 0.54)
+    outline: none
+    border-radius: 2px
+    background-color: #F06292
+    opacity: 0
+    visibility: hidden
 
-.save:hover
-  background-color: #F86A9A
-  cursor: pointer
+    transition: visibility 0.4s, opacity 0.4s, background-color 0.4s
+    transition-timing-function: cubic-bezier(.4, 0, .2, 1)
 
-.save:active
-  background-color: #FF71A1
+  &:hover .save
+    visibility: visible
+    opacity: 0.95
 
-.save[disabled]
-  background-color: #E91E63
+.save
+  &:hover
+    background-color: #F86A9A
+    cursor: pointer
 
-#message-list li p
-  flex: 1 1
-  padding: 8px
+  &:active
+    background-color: #FF71A1
 
-  word-wrap: break-word
-  overflow-wrap: break-word
-  overflow: hidden
-
-#message-list li .message-meta
-  flex-shrink: 0
-  display: flex
-  flex-direction: column
-  align-items: flex-end
-  justify-content: space-between
-  padding: 0 0 4px
+  &[disabled]
+    background-color: #E91E63
 
 .message-overflow
   display: inline-block
@@ -312,15 +322,6 @@ main
 .message-meta .dropdown
   /* compensate for the icon being higher and not looking like it occupies the lower space */
   margin-bottom: -24px
-
-.dropdown .toggle.message-overflow
-  padding: 0
-
-.dropdown .toggle.message-overflow:hover
-  background-color: transparent
-
-.dropdown .toggle.message-overflow:active
-  background-color: transparent
 
 .message-overflow > .icon
   margin-left: 24px
