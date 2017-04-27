@@ -316,28 +316,36 @@ main
   &[disabled]
     background-color: #E91E63
 
+.message-meta
+  .dropdown
+    /* compensate for the icon being higher and not looking like it occupies the lower space */
+    margin-bottom: -24px
+
+  time
+    color: rgba(0, 0, 0, 0.54)
+    font-size: 16px
+    padding: 0
+    margin-right: 8px
+
 .message-overflow
   display: inline-block
 
-.message-meta .dropdown
-  /* compensate for the icon being higher and not looking like it occupies the lower space */
-  margin-bottom: -24px
+  > .icon
+    margin-left: 24px
+    margin-bottom: 8px
 
-.message-overflow > .icon
-  margin-left: 24px
-  margin-bottom: 8px
+  &:hover
+    cursor: pointer
 
-.message-overflow:hover
-  cursor: pointer
+  &:disabled:hover
+    cursor: default
 
-.message-overflow:disabled:hover
-  cursor: default
+  &:hover .icon,
+  &:active .icon
+    color: rgba(0, 0, 0, 0.87)
 
-.message-overflow:hover .icon, .message-overflow:active .icon
-  color: rgba(0, 0, 0, 0.87)
-
-.message-overflow:disabled:disabled .icon
-  color: rgba(0, 0, 0, 0.38)
+  &:disabled:disabled .icon
+    color: rgba(0, 0, 0, 0.38)
 
 .identicon
   width: 38px
@@ -347,17 +355,11 @@ main
   margin: 1px 8px 1px 2px
   padding: 3px
 
-.identicon .block
-  display: inline-block
-  float: left
-  width: 20%
-  height: 20%
-
-.message-meta time
-  color: rgba(0, 0, 0, 0.54)
-  font-size: 16px
-  padding: 0
-  margin-right: 8px
+  .block
+    display: inline-block
+    float: left
+    width: 20%
+    height: 20%
 
 #message-input
   display: flex
@@ -371,8 +373,8 @@ main
   padding: 0
   width: 1400px
 
-#message-input .progress
-  position: absolute
+  .progress
+    position: absolute
 
 .preview-container
   background: #000000
@@ -382,17 +384,24 @@ main
   width: 200px
   flex-shrink: 0
 
-.preview-container video
-  height: 100%
-  width: 100%
+  video
+    height: 100%
+    width: 100%
 
-.preview-container .switch-camera, .preview-container .switch-camera:focus
-  position: absolute
-  display: block
-  /* vertical differences here account for weirdness in this particular icon's spacing */
-  padding: 6px 8px 2px
-  bottom: 8px
-  left: 8px
+  .switch-camera,
+  .switch-camera:focus
+    position: absolute
+    display: block
+    /* vertical differences here account for weirdness in this particular icon's spacing */
+    padding: 6px 8px 2px
+    bottom: 8px
+    left: 8px
+
+  &:hover .switch-camera
+    visibility: visible
+    opacity: 0.95
+
+.switch-camera
   border: 1px solid rgba(0, 0, 0, 0.54)
   outline: none
   border-radius: 2px
@@ -403,16 +412,12 @@ main
   transition: visibility 0.4s, opacity 0.4s, background-color 0.4s
   transition-timing-function: cubic-bezier(.4, 0, .2, 1)
 
-.preview-container:hover .switch-camera
-  visibility: visible
-  opacity: 0.95
+  &:hover
+    background-color: #F86A9A
+    cursor: pointer
 
-.switch-camera:hover
-  background-color: #F86A9A
-  cursor: pointer
-
-.switch-camera:active
-  background-color: #FF71A1
+  &:active
+    background-color: #FF71A1
 
 .camera-disabled-message
   position: absolute
@@ -466,23 +471,23 @@ main
   transition: border-color .3s
   transition-timing-function: cubic-bezier(.4, 0, .2, 1)
 
-#message:hover
-  border-color: rgba(0, 0, 0, 0.54)
+  :hover
+    border-color: rgba(0, 0, 0, 0.54)
 
-#message:active:active, #message:focus:focus
-  border-color: #F06292
-  border-width: 2px
-  padding: 4px 2px 3px 2px /* account for extra border size */
+  :active,
+  :focus
+    border-color: #F06292
+    border-width: 2px
+    padding: 4px 2px 3px 2px /* account for extra border size */
 
-#message.full:active:active, body #message.full:focus:focus
-  border-color: #D32F2F
+  .full:active,
+  .full:focus
+    border-color: #D32F2F
 
-/* lol css gods look at me now */
-#message[readonly][readonly][readonly]
-  border-color: #CB7A95
-
-#message[readonly]
-  color: rgba(0, 0, 0, 0.38)
+  /* lol css gods look at me now */
+  [readonly]
+    border-color: #CB7A95
+    color: rgba(0, 0, 0, 0.38)
 
 #char-counter
   color: rgba(0, 0, 0, 0.54)
@@ -497,10 +502,11 @@ main
   transition: visiblity .3s, opacity .3s, color .3s
   transition-timing-function: cubic-bezier(.4, 0, .2, 1)
 
-#char-counter.full
-  color: #F44336
+  .full
+    color: #F44336
 
-#message:active + #char-counter, #message:focus + #char-counter
+#message:active + #char-counter,
+#message:focus + #char-counter
   visibility: visible
   opacity: 1
 
@@ -513,16 +519,16 @@ main
   padding-left: 16px
   padding-right: 16px
 
-#send:hover
-  background-color: #F86A9A
-  cursor: pointer
+  &:hover
+    background-color: #F86A9A
+    cursor: pointer
 
-#send:active
-  background-color: #FF71A1
+  &:active
+    background-color: #FF71A1
 
-#send:disabled:disabled
-  cursor: default
-  background-color: #CB7A95
+  &:disabled:disabled
+    cursor: default
+    background-color: #CB7A95
 
 .progress
   display: block
@@ -537,42 +543,42 @@ main
   transition: visibility .3s, opacity .3s
   transition-timing-function: cubic-bezier(.4,0,.2,1)
 
-.progress.visible
-  visibility: visible
-  opacity: 1
+  &.visible
+    visibility: visible
+    opacity: 1
 
-.progress .circle .mask, .progress .circle .fill
-  width: 48px
-  height: 48px
-  position: absolute
-  border-radius: 50%
+  .circle
+    .mask, .fill
+      width: 48px
+      height: 48px
+      position: absolute
+      border-radius: 50%
 
-.progress .circle .mask, .progress .circle .fill
-  backface-visibility: hidden
-  transition: transform .3s
+      backface-visibility: hidden
+      transition: transform .3s
 
-.progress .circle .mask
-  clip: rect(0px, 48px, 48px, 24px)
+    .mask
+      clip: rect(0px, 48px, 48px, 24px)
 
-.progress .circle .mask .fill
-  clip: rect(0px, 24px, 48px, 0px)
-  background-color: #F06292
+      .fill
+        clip: rect(0px, 24px, 48px, 0px)
+        background-color: #F06292
 
-.progress .inset
-  width: 36px
-  height: 36px
-  position: absolute
-  margin-left: 6px; /* (circle size - inset size) / 2 */
-  margin-top: 6px
-  border-radius: 50%
-  background-color: #fafafa
-  display: flex
-  justify-content: center
-  align-items: center
+  .inset
+    width: 36px
+    height: 36px
+    position: absolute
+    margin-left: 6px; /* (circle size - inset size) / 2 */
+    margin-top: 6px
+    border-radius: 50%
+    background-color: #fafafa
+    display: flex
+    justify-content: center
+    align-items: center
 
-.progress .text
-  color: rgba(0, 0, 0, 0.87)
-  overflow: hidden
+  .text
+    color: rgba(0, 0, 0, 0.87)
+    overflow: hidden
 
 .dialog-scrim
   position: fixed
@@ -582,11 +588,12 @@ main
   bottom: 0
   z-index: 20
   background-color: rgba(0, 0, 0, 0.40)
+
   transition: opacity cubic-bezier(.4, 0, .2, 1) 300ms
   opacity: 1
 
-.dialog-scrim.entering, .dialog-scrim.leaving
-  opacity: 0
+  &.entering, &.leaving
+    opacity: 0
 
 .dialog-container
   position: fixed
@@ -611,31 +618,31 @@ main
   transition: transform cubic-bezier(0, 0, .2, 1) 400ms
   transform: translateY(0)
 
-.dialog.entering
-  transform: translateY(100vh)
+  &.entering
+    transform: translateY(100vh)
 
-.dialog.will-leave
-  transition: all cubic-bezier(.4, 0, 1, 1) 400ms
+  &.will-leave
+    transition: all cubic-bezier(.4, 0, 1, 1) 400ms
 
-.dialog.leaving
-  transform: translateY(-100vh)
+  &.leaving
+    transform: translateY(-100vh)
 
-.dialog > h2:first-child
-  margin-top: 0
-  margin-bottom: 0
-  margin-right: 8px
-  display: inline-block
+  > h2:first-child
+    margin-top: 0
+    margin-bottom: 0
+    margin-right: 8px
+    display: inline-block
 
-.dialog > h2 + .secondary
-  display: inline-block
+  > h2 + .secondary
+    display: inline-block
 
-.dialog ul
-  margin-left: 20px
+  ul
+    margin-left: 20px
 
-.dialog li
-  padding-left: 8px
-  margin-top: 8px
-  margin-bottom: 8px
+  li
+    padding-left: 8px
+    margin-top: 8px
+    margin-bottom: 8px
 
 .secondary
   color: rgba(0, 0, 0, 0.54)

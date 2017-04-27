@@ -97,5 +97,8 @@
       ],
       "brfs"
     ]
+  },
+  "stylint": {
+    "brackets": false
   }
 }
