@@ -3,9 +3,7 @@
   margin: 0
   padding: 0
 
-html
-  -ms-text-size-adjust: 100%
-  -webkit-text-size-adjust: 100%
+@import 'typography.styl'
 
 [aria-hidden]
   display: none
@@ -13,58 +11,19 @@ html
 body
   background-color: #ECECEC
   color: rgba(0, 0, 0, 0.87)
-  font-family: 'Roboto', 'sans-serif'
-  font-size: 15px
-  font-weight: normal
-  line-height: 1.4
   width: 100%
   height: 100%
-  -webkit-font-smoothing: antialiased
-  -webkit-tap-highlight-color: rgba(0,0,0,0)
-  -webkit-touch-callout: none
 
   &.dark
     background-color: #212121
     color: #ffffff
 
-b
-  font-weight: 500
-
-h1, h2, h3, h4, h5, h6
-  font-weight: 400
-  text-rendering: optimizeLegibility
-  margin: 8px 0
-
 h1
-  font-size: 45px
-  line-height: 64px
   color: rgba(0, 0, 0, 0.54)
-
-h2
-  font-size: 34px
-  line-height: 40px
-
-h3
-  font-size: 24px
-  line-height: 32px
-
-h4
-  font-size: 20px
-  font-weight: 500
-  letter-spacing: 0.005em
-
-h5
-  font-size: 16px
-  letter-spacing: 0.010em
-  line-height: 24px
-
 h6
-  font-size: 14px
-  letter-spacing: 0.020em
   color: rgba(0, 0, 0, 0.54)
 
 a, a:visited, a:hover, a:focus, a:active
-  font-weight: inherit
   color: #F06292
 
 button
