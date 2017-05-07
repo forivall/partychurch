@@ -111,7 +111,7 @@ function showAbout() {
 
 const done = Function.prototype
 
-// TODO: render out jade template of main content
+// set flag for first time run ("dispatch")
 let dispatch = true
 page((ctx, next) => {
   ctx.dispatch = dispatch
@@ -121,9 +121,8 @@ page((ctx, next) => {
   next()
 })
 
-
+// find markers for where to replace content when page changes
 const childNodes = Array.from(document.body.childNodes)
-
 let mainStart
 let mainEnd
 for (const childNode of childNodes) {
