@@ -8,7 +8,13 @@ const debug = createDebug('partychurch:home')
 export class Home extends EventSubscriber {
   constructor(app) {
     super()
+
+    debug('we\'re home!')
+    this.io = createClient('/home')
+
     app.notificationCounter.unreadMessages = 0
+
+    this.listenTo(this.io, 'party', this.onParty)
   }
 }
 
