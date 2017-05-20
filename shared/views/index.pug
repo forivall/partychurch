@@ -2,7 +2,7 @@
 main
   h1 welcome!
   
-  div: form
+  //- div: form
     h2 Create a new room
     div: label Room Name
       input#new-room-name
@@ -13,14 +13,9 @@ main
     div: input(type='submit', value='Create Room')
     
   div: form
-    h2 Join a room
-    label Room Name
-      input#existing-room-name
+    h2: label(for='existing-room-name') Join a party
+    input#existing-room-name
     input(type='submit', value='Join Room')
 
   div
-    h2 Join public room
     ul.room-list
-      each room in ['butts', 'meat']
-        li
-          a(href='/' + room)= room

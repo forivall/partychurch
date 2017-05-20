@@ -9,7 +9,7 @@ import captureFrames from './capture-frames'
 import createCharCounter from './char-counter'
 import EventSubscriber from './event-subscriber'
 import initMessageList from './message'
-import initBroadcastPane from './broadcast'
+// import initBroadcastPane from './broadcast'
 import initProgressSpinner from './progress'
 
 const debug = createDebug('partychurch:room')
@@ -17,14 +17,14 @@ const debug = createDebug('partychurch:room')
 export class Room extends EventSubscriber {
   constructor(name, app) {
     super()
-    this.onSubmitMessage = this.onSubmitMessage.bind(this)
-    this.onSubmitPassword = this.onSubmitPassword.bind(this)
-    this.onAck = this._bindHandler(this.onAck)
-    this.leave = this._bindHandler(this.leave)
-    this.onChat = this._bindHandler(this.onChat)
-    this.onActive = this._bindHandler(this.onActive)
-    this.onBroadcast = this._bindHandler(this.onBroadcast)
-    this.onBroadcaster = this._bindHandler(this.onBroadcaster)
+    this._bindHandlers([
+      'onSubmitMessage',
+      'onAck',
+      'onChat',
+      // 'onBroadcast',
+      // 'onBroadcaster',
+      'onActive',
+    ])
 
     this.name = name
     this.io = createClient(`/room/${this.name}`)
@@ -58,16 +58,13 @@ export class Room extends EventSubscriber {
     this.messageForm = document.querySelector('#message-form')
     this.messageForm.addEventListener('submit', this.onSubmitMessage)
 
-    this.passwordInput = document.querySelector('#broadcaster-password')
-
-    this.passwordForm = document.querySelector('#broadcaster-password-form')
-    this.passwordForm.addEventListener('submit', this.onSubmitPassword)
-
-    this.listenTo(this.io, 'ack', this.onAck)
-    this.listenTo(this.io, 'chat', this.onChat)
-    this.listenTo(this.io, 'broadcast', this.onBroadcast)
-    this.listenTo(this.io, 'broadcaster', this.onBroadcaster)
-    this.listenTo(this.io, 'active', this.onActive)
+    this.autoListen(this.io, [
+      'ack',
+      'chat',
+      // 'broadcast',
+      // 'broadcaster',
+      'active',
+    ])
 
     debug('connecting')
     if (this.io.connected) {
@@ -80,10 +77,10 @@ export class Room extends EventSubscriber {
       document.querySelector('#preview').parentNode
     )
 
-    this.broadcastPane = initBroadcastPane(
-      document.querySelector('#broadcast-pane'),
-      this.cameraPreview
-    )
+    // this.broadcastPane = initBroadcastPane(
+    //   document.querySelector('#broadcast-pane'),
+    //   this.cameraPreview
+    // )
   }
 
   destroy() {
@@ -95,13 +92,6 @@ export class Room extends EventSubscriber {
     this.charCounter.destroy()
     this.messageForm.removeEventListener('submit', this.onSubmitMessage)
     this.cameraPreview.destroy()
-  }
-
-  _bindHandler(handler) {
-    return function() {
-      if (this._disposed) return null
-      return handler.apply(this, arguments)
-    }.bind(this)
   }
 
   join() {
@@ -155,14 +145,6 @@ export class Room extends EventSubscriber {
     }).on('progress', percentDone => this.progressSpinner.setValue(percentDone))
   }
 
-  onSubmitPassword(event) {
-    event.preventDefault()
-
-    this.io.emit('auth', this.passwordInput.value)
-
-    console.log(event)
-  }
-
   onAck(ack) {
     if (this.awaitingAck && this.awaitingAck === ack.key) {
       const timing = Date.now() - this.sendTime
@@ -197,13 +179,13 @@ export class Room extends EventSubscriber {
     this.activeUsers.count = numActive
   }
 
-  onBroadcast(broadcast) {
-    this.broadcastPane.onBroadcast(broadcast)
-  }
-
-  onBroadcaster(broadcaster) {
-    this.broadcastPane.onBroadcaster(broadcaster)
-  }
+  // onBroadcast(broadcast) {
+  //   this.broadcastPane.onBroadcast(broadcast)
+  // }
+  //
+  // onBroadcaster(broadcaster) {
+  //   this.broadcastPane.onBroadcaster(broadcaster)
+  // }
 }
 
 export function allowed(ctx, next) {

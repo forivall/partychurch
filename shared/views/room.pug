@@ -1,16 +1,12 @@
 
 main.room
   #broadcast-pane
-    .broadcaster-video.displayed
-      include video-container.pug
-      .preview-container(aria-hidden=true).shadow-1.camera-enabled
-        video#broadcast-preview
-      p
-      .broadcast-meta
-        .identicon(aria-hidden=true)
-        time
+    if isHost
+      include broadcast-host.pug
+    else
+      include broadcast-viewer.pug
     if hostFingerprint === null
-      include password.pug
+      p this party is waiting to start or already over
   #message-pane
     ul#message-list.shadow-1
 footer#message-input
