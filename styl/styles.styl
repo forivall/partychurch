@@ -4,31 +4,46 @@
   padding: 0
 
 @import 'typography.styl'
+@import 'colors.styl'
+
+butt-on()
+  border: 1px solid color-light-button-border
+  outline: none
+  border-radius: 2px
+  background-color: color-light-button-bg
+butt-on-states()
+  &:hover
+    background-color: color-light-button-bg-pending
+    cursor: pointer
+
+  &:active
+    background-color: color-light-button-bg-active
+
+  &[disabled]
+    background-color: color-light-button-bg-disabled
 
 [aria-hidden]
   display: none
 
 body
-  background-color: #ECECEC
-  color: rgba(0, 0, 0, 0.87)
+  background-color: color-light-bg
+  color: color-light-fg
   width: 100%
   height: 100%
 
   &.dark
-    background-color: #212121
-    color: #ffffff
+    background-color: color-dark-bg
+    color: color-dark-text
 
-h1
-  color: rgba(0, 0, 0, 0.54)
-h6
-  color: rgba(0, 0, 0, 0.54)
+h1, h6
+  color: color-light-fg-lesser
 
 a, a:visited, a:hover, a:focus, a:active
-  color: #F06292
+  color: color-light-accent
 
 header
-  background-color: #F06292
-  color: #ffffff
+  background-color: color-light-accent
+  color: color-light-title
   display: flex
   height: 48px
   z-index: 10
@@ -50,12 +65,12 @@ header
     display: flex
 
 .icon-invert.icon-invert
-  color: #ffffff
+  color: color-light-icon-invert
   &:disabled
-    color: rgba(255, 255, 255, 0.3)
+    color: color-light-icon-invert-disabled
 
 .icon-normal.icon-normal
-  color: rgba(0, 0, 0, 0.54)
+  color: color-light-icon
 
 #active-users
   font-size: 16px
@@ -72,12 +87,12 @@ header
 
   .toggle
     padding: 12px
-    background-color: rgba(0, 0, 0, 0)
+    background-color: color-transparent
     border: none
     outline: none
 
     :hover
-      background-color: rgba(0, 0, 0, 0.12)
+      background-color: color-light-menu-pending
       cursor: pointer
 
   .menu
@@ -109,8 +124,8 @@ header
     height: 48px
     outline: none
     border: none
-    background-color: #ffffff
-    color: rgba(0, 0, 0, 0.87)
+    background-color: color-light-bg
+    color: color-light-fg
     font-size: 16px
     padding-left: 16px
     padding-right: 16px
@@ -128,11 +143,11 @@ header
       border-bottom-right-radius: 2px
 
     &:hover
-      background-color: #eeeeee
+      background-color: color-light-bg-pending
       cursor: pointer
 
     &:active
-      background-color: #dddddd
+      background-color: color-light-bg-active
 
 
   .toggle.message-overflow
@@ -173,8 +188,8 @@ main
   list-style-type: none
 
   li
-    background-color: #fafafa
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12)
+    background-color: color-light-message-bg
+    border-bottom: 1px solid color-light-message-separator
     display: flex
     font-size: 20px
     padding: 0px
@@ -247,10 +262,8 @@ main
     padding: 4px 8px
     bottom: 8px
     left: 8px
-    border: 1px solid rgba(0, 0, 0, 0.54)
-    outline: none
-    border-radius: 2px
-    background-color: #F06292
+
+    butt-on()
     opacity: 0
     visibility: hidden
 
@@ -262,15 +275,7 @@ main
     opacity: 0.95
 
 .save
-  &:hover
-    background-color: #F86A9A
-    cursor: pointer
-
-  &:active
-    background-color: #FF71A1
-
-  &[disabled]
-    background-color: #E91E63
+  butt-on-states()
 
 .message-meta
   .dropdown
@@ -278,7 +283,7 @@ main
     margin-bottom: -24px
 
   time
-    color: rgba(0, 0, 0, 0.54)
+    color: color-light-fg-lesser
     font-size: 16px
     padding: 0
     margin-right: 8px
@@ -298,15 +303,15 @@ main
 
   &:hover .icon,
   &:active .icon
-    color: rgba(0, 0, 0, 0.87)
+    color: color-light-fg
 
   &:disabled:disabled .icon
-    color: rgba(0, 0, 0, 0.38)
+    color: color-light-fg-disabled
 
 .identicon
   width: 38px
   height: 38px
-  border: 1px solid rgba(0, 0, 0, 0.26)
+  border: 1px solid color-light-border
   border-radius: 2px
   margin: 1px 8px 1px 2px
   padding: 3px
@@ -333,7 +338,7 @@ main
     position: absolute
 
 .preview-container
-  background: #000000
+  background: color-video-bg
   position: relative
 
   height: 150px
@@ -358,10 +363,7 @@ main
     opacity: 0.95
 
 .switch-camera
-  border: 1px solid rgba(0, 0, 0, 0.54)
-  outline: none
-  border-radius: 2px
-  background-color: #F06292
+  butt-on()
   opacity: 0
   visibility: hidden
 
@@ -369,11 +371,11 @@ main
   transition-timing-function: cubic-bezier(.4, 0, .2, 1)
 
   &:hover
-    background-color: #F86A9A
+    background-color: color-light-button-pending
     cursor: pointer
 
   &:active
-    background-color: #FF71A1
+    background-color: color-light-button-active
 
 .camera-disabled-message
   position: absolute
@@ -382,7 +384,7 @@ main
   right: 0
   bottom: 0
   padding: 16px
-  color: #ffffff
+  color: color-video-fg
 
   display: flex
   flex-direction: column
@@ -402,7 +404,7 @@ main
 
 #message-form
   align-self: flex-end
-  background-color: #fafafa
+  background-color: color-light-message-bg
   border-radius: 2px
   display: flex
   flex: 1
@@ -410,9 +412,9 @@ main
   overflow: hidden
 
 #message
-  background: #fafafa
+  background: color-light-message-bg
   border: none
-  border-bottom: 1px solid rgba(0, 0, 0, 0.26)
+  border-bottom: 1px solid color-light-border
   color: #212121
   font-family: 'Roboto', 'sans-serif'
   font-size: 16px
@@ -428,22 +430,21 @@ main
   transition-timing-function: cubic-bezier(.4, 0, .2, 1)
 
   :hover
-    border-color: rgba(0, 0, 0, 0.54)
+    border-color: color-light-fg-lesser
 
   :active,
   :focus
-    border-color: #F06292
+    border-color: color-light-accent
     border-width: 2px
     padding: 4px 2px 3px 2px /* account for extra border size */
 
   .full:active,
   .full:focus
-    border-color: #D32F2F
+    border-color: color-light-error
 
-  /* lol css gods look at me now */
   [readonly]
-    border-color: #CB7A95
-    color: rgba(0, 0, 0, 0.38)
+    border-color: color-light-accent-disabled
+    color: color-light-fg-disabled
 
 #char-counter
   color: rgba(0, 0, 0, 0.54)
@@ -467,24 +468,16 @@ main
   opacity: 1
 
 #send
-  border: 0
-  background-color: #F06292
-  /* match the form's border radius on the outer corners */
-  border-radius: 0 2px 2px 0
   margin: 0 0 0 4px
   padding-left: 16px
   padding-right: 16px
 
-  &:hover
-    background-color: #F86A9A
-    cursor: pointer
+  border: 0
+  background-color: color-light-button-bg
+  /* match the form's border radius on the outer corners */
+  border-radius: 0 2px 2px 0
 
-  &:active
-    background-color: #FF71A1
-
-  &:disabled:disabled
-    cursor: default
-    background-color: #CB7A95
+  butt-on-states()
 
 .progress
   display: block
@@ -518,7 +511,7 @@ main
 
       .fill
         clip: rect(0px, 24px, 48px, 0px)
-        background-color: #F06292
+        background-color: color-light-accent
 
   .inset
     width: 36px
@@ -527,13 +520,13 @@ main
     margin-left: 6px; /* (circle size - inset size) / 2 */
     margin-top: 6px
     border-radius: 50%
-    background-color: #fafafa
+    background-color: color-light-message-bg
     display: flex
     justify-content: center
     align-items: center
 
   .text
-    color: rgba(0, 0, 0, 0.87)
+    color: color-light-fg
     overflow: hidden
 
 .dialog-scrim
@@ -543,7 +536,7 @@ main
   top: 0
   bottom: 0
   z-index: 20
-  background-color: rgba(0, 0, 0, 0.40)
+  background-color: color-light-dialog-scrim
 
   transition: opacity cubic-bezier(.4, 0, .2, 1) 300ms
   opacity: 1
@@ -565,7 +558,7 @@ main
   overflow: hidden
 
 .dialog
-  background-color: #fafafa
+  background-color: color-light-dialog-bg
   width: 672px
   height: auto
   max-height: 80vh
@@ -601,7 +594,7 @@ main
     margin-bottom: 8px
 
 .secondary
-  color: rgba(0, 0, 0, 0.54)
+  color: color-light-fg-lesser
 
 .flex-grow
   align-items: flex-end
