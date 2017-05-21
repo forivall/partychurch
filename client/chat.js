@@ -35,7 +35,6 @@ export class Chat extends EventSubscriber {
     )
 
     this.messageInput = document.querySelector('#message')
-    this.messageInput.readOnly = true
 
     this.sendButton = document.querySelector('#send')
     this.charCounter = createCharCounter(
@@ -75,6 +74,7 @@ export class Chat extends EventSubscriber {
     if (this.awaitingAck) return
 
     const messageText = this.messageInput.value
+    this.messageInput.readOnly = true
     this.sendButton.setAttribute('disabled', true)
     this.awaitingAck = cuid()
     this.progressSpinner.setValue(0).show()
