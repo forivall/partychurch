@@ -11,9 +11,13 @@
     "lint": "eslint --ext .js ./ && npm run lint-pug && echo Hooray || echo Please fix",
     "lint-pug": "pug-lint views client/views",
     "prepublish": "npm run test",
+    "prestart": "gulp --cwd semantic build",
     "start": "node index.js",
-    "dev": "DEBUG=partychurch:*,socket.io:server nodemon -w lib -w index.js -w server.js -w shared -w views -e js,pug",
-    "test": "mocha -R spec --compilers js:test-compiler --recursive test/"
+    "dev": "run-p dev:*",
+    "dev:server": "DEBUG=partychurch:*,socket.io:server nodemon -w lib -w index.js -w server.js -w shared -w views -e js,pug",
+    "dev:semantic": "gulp --cwd semantic watch",
+    "test": "mocha -R spec --compilers js:test-compiler --recursive test/",
+    "semantic": "gulp --cwd semantic"
   },
   "repository": {
     "type": "git",
@@ -53,6 +57,7 @@
     "debug": "^2.2.0",
     "express": "^4.9.8",
     "filmstrip2gif": "^1.0.1",
+    "gulp": "^3.9.1",
     "page": "^1.7.1",
     "password-generator": "^2.0.2",
     "postcss": "^5.0.8",
