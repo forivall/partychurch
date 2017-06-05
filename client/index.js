@@ -34,19 +34,24 @@ const app = {
   onjoin: Function.prototype
 }
 
-io.on('connect', function() {
+io.on('connect', () => {
   io.emit('fingerprint', getFingerprint())
-}).on('disconnect', function() {
+}).on('disconnect', () => {
   activeUsers.count = 0
 })
 
-io.on('joinroom', function(exists) {
+io.on('joinroom', (exists) => {
   app.onjoin(exists)
 })
 
-io.on('userid', function(id) {
+io.on('userid', (id) => {
   app.clientId = id
   if (app.messageList) app.messageList.clientId = id
+})
+
+
+io.on('reload', () => {
+  window.location.reload()
 })
 
 createDropdown(document.querySelector('header .dropdown'), {
