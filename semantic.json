@@ -21,7 +21,9 @@
   "components": [
     "reset",
     "site",
-    "button"
+    "button",
+    "icon",
+    "label"
   ],
   "version": "2.2.10"
 }

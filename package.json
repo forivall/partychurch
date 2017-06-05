@@ -14,7 +14,7 @@
     "prestart": "gulp --cwd semantic build",
     "start": "node index.js",
     "dev": "run-p dev:*",
-    "dev:server": "DEBUG=partychurch:*,socket.io:server nodemon -w lib -w index.js -w server.js -w shared -w views -e js,pug",
+    "dev:server": "NODE_ENV=development DEBUG=partychurch:*,socket.io:server nodemon -w {lib,index.js,server.js,shared,views} -e js,pug",
     "dev:semantic": "gulp --cwd semantic watch",
     "test": "mocha -R spec --compilers js:test-compiler --recursive test/",
     "semantic": "gulp --cwd semantic"
