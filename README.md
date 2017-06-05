@@ -1,12 +1,12 @@
 ![partychurch](https://github.com/forivall/partychurch/blob/master/icon/partychurch.png)
 
-#partychurch
+# partychurch
 A web-based livestreaming site accompanied by ephemeral chat that lets viewers
 send simple, short messages along with a 2-second video of themselves.
 
 The offical server can be found at [https://chat.meatspac.es](https://chat.meatspac.es)
 
-##Table of contents
+## Table of contents
 - [Features](#features)
 - [Running a server](#running-a-server)
   - [Required software](#required-software)
@@ -21,7 +21,7 @@ The offical server can be found at [https://chat.meatspac.es](https://chat.meats
 - [Special thanks to](#special-thanks-to)
 - [License](#license)
 
-##Features
+## Features
 - Send a message to anyone connected to the same partychurch server
 - Provides jpeg (filmstrip-style) videos alongside chats, which tend to be
 more efficient to display than videos used in meatspace-chat-v2 (h264
@@ -34,8 +34,8 @@ messages and blocking any future ones
 elements, meaning the page loads quickly and is quite stable over long
 periods of time.
 
-##Running a server
-###Required software
+## Running a server
+### Required software
 partychurch requires [node](http://nodejs.org) >=6.0.0, ffmpeg/libav, and ImageMagick
 in order to work. Node can be downloaded from the official site. ffmpeg or libav
 can generally be installed from your OS's package manager, or from source. Examples
@@ -57,7 +57,7 @@ available from your OS's package manager, e.g.:
 $ sudo apt-get install imagemagick
 ```
 
-###Configuring your server
+### Configuring your server
 Server configuration is handled through a JSON file: `conf.json`.
 
 `conf.json-example` in the main directory will often provide all you need
@@ -77,13 +77,13 @@ If you are running a production partychurch server, or simply want to
 customize your development environment, you can change a few options in
 `conf.json`. The options are:
 
-###Normal options
-####port
+### Normal options
+#### port
 The port to run the HTTP server on for this instance.
 
 **Ex:** `"port": 3000`
 
-####idKey
+#### idKey
 The key to use for hashing user ID's. This allows users to be given a
 stable, unique ID per browser, but not expose their actual fingerprint
 to other users on the server or be able to track users across partychurch
@@ -98,38 +98,38 @@ specified (or is a falsy value), Analytics will not be utilized.
 
 **Ex:** `"gaTrackingId": "UA-9999999-1"`
 
-###HTTPS options (all must be specified if you want to use HTTPS)
-####sslCert
+### HTTPS options (all must be specified if you want to use HTTPS)
+#### sslCert
 A relative filepath to an SSL certificate file to be used for setting up
 HTTPS connections.
 
 **Ex:** `"sslCert": "./certs/certificate.crt"`
 
-####sslKey
+#### sslKey
 A relative filepath to the private key used for the SSL certificate file specified in `sslCert`.
 
 **Ex:** `"sslKey": "./certs/private.key"`
 
-####sslCaBundle
+#### sslCaBundle
 A relative filepath to the bundle of CA certificates to be used with the SSL certificate specified
 in `sslCert`. These should be provided by your certificate provider.
 
 **Ex:** `"sslCaBundle": "./certs/partychurch.ca-bundle"`
 
-####sslPort
+#### sslPort
 The port HTTPS connections should be accepted on.
 
 **Ex:** `"sslPort": 443`
 
-####canonicalHost
+#### canonicalHost
 The host non-HTTPS connections should be redirected to (the host of your HTTPS site).
 
 **Ex:** `"canonicalHost": "https://seat.camp"`
 
-##Protocol
+## Protocol
 The protocol of partychurch is built around socket.io, making use of binary frames where appropriate.
 
-###Connecting
+### Connecting
 Upon connecting, clients must send a fingerprint to the server. This fingerprint should uniquely
 identify a particular client, and be relatively stable. Examples of good choices for this would be
 a hardware identifier (e.g. Android ID), or a fingerprint constructed from many data points that
@@ -161,7 +161,7 @@ io.emit('join', 'jpg')
 At present, the server supports two video types: `jpg` (vertically-stacked JPEG filmstrip) or
 `h264`.
 
-###Messages
+### Messages
 Messages are transmitted to clients using the `chat` message. The format of the data passed in this
 message is:
 ```javascript
@@ -207,11 +207,11 @@ message, formatted as:
 ```
 If `err` is not set, the message sending succeeded.
 
-###Status updates
+### Status updates
 The server will send clients a number of different status updates to allow things like user counts
 to be known. These are all handled through seperate messages, which are:
 
-####active
+#### active
 Specifies how many users are currently connected.
 ```javascript
 io.on('active', function(numActive) {
@@ -219,7 +219,7 @@ io.on('active', function(numActive) {
 })
 ```
 
-##Contributing
+## Contributing
 partychurch is written using ES6-compliant JavaScript, compiled to ES5 using babel. Client-side code
 is similarly written, but compiled with `browserify` and `babelify`. Contributions should attempt to
 make use of ES6 features where they make sense. Pull requests are accepted and will be looked at in
@@ -231,11 +231,11 @@ New features will be accepted if they fortify/enhance behavior that developed fr
 (e.g. hashtags on Twitter), but will likely be denied if they are something completely outside of
 the way the community uses the site.
 
-##Special thanks to
+## Special thanks to
 - [tec27](https://github.com/tec27) for maintaining meatspace as seatcamp
 - [ednapiranha](https://github.com/ednapiranha) for creating meatspace
 - [thethp](https://github.com/thethp) for [whosthatmeat](https://github.com/thethp/whosthatmeat)
 which inspired the identicons feature
 
-##License
+## License
 MIT
