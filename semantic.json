@@ -20,7 +20,8 @@
   "rtl": false,
   "components": [
     "reset",
-    "site"
+    "site",
+    "button"
   ],
   "version": "2.2.10"
 }
