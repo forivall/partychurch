@@ -127,6 +127,14 @@ app.use(stylus.middleware({
   }
 }))
 
+if (app.get('env') === 'development') {
+  const browserSync = require('browser-sync')
+
+  const bs = browserSync.create().init({ logSnippet: false })
+
+  app.use(require('connect-browser-sync')(bs))
+}
+
 app.get('/client.js', browserify(__dirname + '/client/index.js', browserifyOpts))
 app.get('/styles.css', serveCss(__dirname + '/tmp/styles.css'))
 
