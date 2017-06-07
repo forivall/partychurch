@@ -6,6 +6,7 @@
 @import 'typography.styl'
 @import 'colors.styl'
 
+// TODO: convert to semantic ui theme
 butt-on()
   border: 1px solid color-light-button-border
   outline: none
@@ -601,6 +602,17 @@ main
   display: flex
   flex-direction: row
   flex: 1
+
+.control-group .control
+  display: inline-flex
+  padding: 0.25em
+
+  &.ui.action.input
+    width: 100%
+
+.broadcast-host-video .preview-container
+  height: auto
+  width: 100%
 
 .shadow-1
   box-shadow:

@@ -4,6 +4,7 @@ import createClient from 'socket.io-client'
 
 import EventSubscriber from './event-subscriber'
 import initChat from './chat'
+import initBroadcastHost from './broadcast-host'
 // import initBroadcastPane from './broadcast'
 
 const debug = createDebug('partychurch:room')
@@ -42,6 +43,9 @@ export class Room extends EventSubscriber {
     //   document.querySelector('#broadcast-pane'),
     //   this.cameraPreview
     // )
+    if (window.user.isHost) {
+      this.broadcastHostPane = initBroadcastHost(this.io)
+    }
   }
 
   destroy() {

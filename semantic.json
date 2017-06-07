@@ -23,7 +23,9 @@
     "site",
     "button",
     "icon",
-    "label"
+    "label",
+    "input",
+    "grid"
   ],
   "version": "2.2.10"
 }

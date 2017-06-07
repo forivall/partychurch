@@ -103,6 +103,7 @@ if (PRODUCTION) {
 
 function setTemplateVars(req, res, next) {
   req.templateVars = {
+    isHost: true,
     theme: req.cookies.theme,
     trackingId: config.gaTrackingId,
     BLANK_IMAGE,

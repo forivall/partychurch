@@ -42,6 +42,10 @@ html
     // !!! main start !!!
     block main
     // !!! main end !!!
+    script(type='text/javascript').
+      window.user = {
+        isHost: #{isHost}
+      };
     if trackingId
       script(type='text/javascript').
         window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date
@@ -49,4 +53,4 @@ html
         ga('send', 'pageview')
       script(type='text/javascript', async, src='//www.google-analytics.com/analytics.js')
     script(type='text/javascript', async, src='client.js')
-    script(type='text/javascript', async, src='public/semantic/semantic.js')
+    //- script(type='text/javascript', async, src='semantic/semantic.js')

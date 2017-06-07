@@ -1,6 +1,7 @@
 node_modules
 cert
 conf.json
+conf.*.json
 npm-debug.log
 .DS_Store
 *.swp
