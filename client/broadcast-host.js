@@ -8,13 +8,18 @@ import createCharCounter from './char-counter'
 import EventSubscriber from './event-subscriber'
 import initProgressSpinner from './progress'
 
+import BroadcastBase from './broadcast-base'
+
 const debug = createDebug('partychurch:chat')
 
 // TODO: finish
 
-export class BroadcastHost extends EventSubscriber {
-  constructor(io, notificationCounter, muteSet) {
+export class BroadcastHost extends BroadcastBase {
+  constructor(io) {
     super()
+
+    // TODO: show picture in picture of current broadcast in bottom right corner of preview
+    // on click, swap
 
     this._bindHandlers([
       'onSubmitBroadcast',
@@ -22,7 +27,6 @@ export class BroadcastHost extends EventSubscriber {
     ])
 
     this.io = io
-    this.notificationCounter = notificationCounter
 
     this.progressSpinner = initProgressSpinner(
       document.querySelector('.progress')

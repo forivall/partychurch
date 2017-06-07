@@ -3,9 +3,7 @@ import filmstrip2gif from 'filmstrip2gif'
 import analytics from './analytics'
 import createCameraPreview from './camera-preview'
 import EventSubscriber from './event-subscriber'
-import createIdenticon from './identicon'
 import icons from './icons'
-import getFingerprint from './fingerprint'
 import localeTime from './locale-time'
 import theme from './theme'
 import {BLANK_IMAGE} from './constants'
@@ -16,20 +14,17 @@ const NUM_VIDEO_FRAMES = 10
 const FILMSTRIP_DURATION = 0.92
 const FILMSTRIP_HORIZONTAL = false
 
-class Broadcast extends EventSubscriber {
+export default class BroadcastBase extends EventSubscriber {
   constructor(elem, cameraPreview) {
     super()
-    this.refreshIdenticon.bind(this)
 
     this._destroyed = false
     this._userId = null
     this._broadcaster = null
     this._srcUrl = null
-    this._animationRequest = null
 
     this.elem = elem
 
-    this.videoContainer = this.elem.querySelector('.video-container')
     this.previewContainer = this.elem.querySelector('.preview-container')
     this.filmstrip = this.elem.querySelector('.filmstrip')
     this.saveButton = this.elem.querySelector('.save')
@@ -72,12 +67,6 @@ class Broadcast extends EventSubscriber {
     this.refreshIdenticon()
   }
 
-  refreshIdenticon() {
-    const newIdenticon = createIdenticon(this._userId)
-    this.identicon.parentElement.replaceChild(newIdenticon, this.identicon)
-    this.identicon = newIdenticon
-  }
-
   clearVideo() {
     this._throwIfDestroyed()
 
@@ -97,11 +86,6 @@ class Broadcast extends EventSubscriber {
 
   onBroadcastImage(broadcast) {
 
-  }
-
-  onBroadcaster(broadcaster) {
-    debug('broadcaster %j', broadcaster)
-    this.toggleBroadcasterTools(broadcaster === getFingerprint())
   }
 
   destroy() {
@@ -141,35 +125,12 @@ class Broadcast extends EventSubscriber {
     filmstrip2gif(this._srcUrl, FILMSTRIP_DURATION, NUM_VIDEO_FRAMES, FILMSTRIP_HORIZONTAL, cb)
   }
 
-  get userId() {
-    return this._userId
-  }
-
   _throwIfDestroyed() {
     if (this._destroyed) throw new Error('Pane already destroyed!')
   }
 
   trackSaveGif() {
+    // TODO: track if broadcaster or viewer, and if it's a chat message or a broadcast
     analytics.onSaveBroadcastGif()
   }
-
-  // --- broadcaster tools ---
-
-  toggleBroadcasterTools(on) {
-    toggle(this.videoContainer, on)
-    toggle(this.previewContainer, on)
-  }
-}
-
-function toggle(el, on, attr = 'aria-hidden', value = '') {
-  if (on) {
-    el.setAttribute(attr, value)
-  } else {
-    el.removeAttribute(attr)
-  }
-}
-
-
-export default function createBroadcastPane() {
-  return new Broadcast(...arguments)
 }
