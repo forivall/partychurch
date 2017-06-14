@@ -2,7 +2,7 @@ import createDebug from 'debug'
 import filmstrip2gif from 'filmstrip2gif'
 import analytics from './analytics'
 import createCameraPreview from './camera-preview'
-import EventSubscriber from './event-subscriber'
+import BroadcastAbstract from './event-subscriber'
 import createIdenticon from './identicon'
 import icons from './icons'
 import getFingerprint from './fingerprint'
@@ -16,7 +16,7 @@ const NUM_VIDEO_FRAMES = 10
 const FILMSTRIP_DURATION = 0.92
 const FILMSTRIP_HORIZONTAL = false
 
-class BroadcastViewer extends EventSubscriber {
+class BroadcastViewer extends BroadcastAbstract {
   constructor(elem, cameraPreview) {
     super()
     this.refreshIdenticon.bind(this)

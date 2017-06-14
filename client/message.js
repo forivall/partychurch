@@ -39,10 +39,6 @@ class Message {
     this.identicon = this.root.querySelector('.identicon')
     this.messageOverflow = this.root.querySelector('.message-overflow')
 
-    // generate icons where needed
-    this.saveButton.appendChild(icons.save('invert'))
-    this.messageOverflow.appendChild(icons.moreVert('normal'))
-
     this.waypoints = [
       new Waypoint({
         element: this.root,

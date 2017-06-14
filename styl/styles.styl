@@ -181,6 +181,13 @@ main
     overflow: hidden
     flex-shrink: 0
 
+.broadcast-host-video
+  .preview-container
+    height: auto
+    width: 100%
+  .progress
+    position: absolute
+
 #message-pane
   width: 50%
 
@@ -277,6 +284,10 @@ main
 
 .save
   butt-on-states()
+// material + semantic ui interop
+.ui.icon.button
+  .material-icons
+    font-size: 1.17em
 
 .message-meta
   .dropdown
@@ -610,9 +621,6 @@ main
   &.ui.action.input
     width: 100%
 
-.broadcast-host-video .preview-container
-  height: auto
-  width: 100%
 
 .shadow-1
   box-shadow:

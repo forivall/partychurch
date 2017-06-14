@@ -2,9 +2,9 @@
 main.room
   #broadcast-pane
     if isHost
-      include broadcast-host.pug
+      include ./broadcast-host
     else
-      include broadcast-viewer.pug
+      include ./broadcast-viewer
     if hostFingerprint === null
       p waiting for party host
   #message-pane
@@ -15,15 +15,7 @@ footer#message-input
       span.camera-disabled-icon.icon-invert.material-icons videocam_off
       span.camera-disabled-text Please enable your webcam
     video#preview
-  .progress.shadow-1
-    .circle
-      .mask.full
-        .fill
-      .mask.half
-        .fill
-        .fill.fix
-    .inset.shadow-1
-        p.text 0%
+  include ./subviews/progress
   form#message-form.shadow-1
     input#message(type='text', maxlength='250', autofocus='true', autocomplete='off',
       autocorrect='on', autocapitalize='on', spellcheck='true')

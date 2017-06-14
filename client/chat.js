@@ -15,6 +15,8 @@ export class Chat extends EventSubscriber {
   constructor(io, notificationCounter, muteSet) {
     super()
 
+    const root = document.querySelector('#message-input')
+
     this._bindHandlers([
       'onSubmitMessage',
       'onAck',
@@ -25,7 +27,7 @@ export class Chat extends EventSubscriber {
     this.notificationCounter = notificationCounter
 
     this.progressSpinner = initProgressSpinner(
-      document.querySelector('.progress')
+      root.querySelector('.progress')
     )
 
     this.messageList = initMessageList(

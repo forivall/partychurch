@@ -5,18 +5,18 @@ import analytics from './analytics'
 import createCameraPreview from './camera-preview'
 import captureFrames from './capture-frames'
 import createCharCounter from './char-counter'
-import EventSubscriber from './event-subscriber'
 import initProgressSpinner from './progress'
 
-import BroadcastBase from './broadcast-base'
+import AbstractBroadcast from './broadcast-abstract'
 
 const debug = createDebug('partychurch:chat')
 
 // TODO: finish
 
-export class BroadcastHost extends BroadcastBase {
+export class BroadcastHost extends AbstractBroadcast {
   constructor(io) {
-    super()
+    const root = document.querySelector('.broadcast-host-video')
+    super(root)
 
     // TODO: show picture in picture of current broadcast in bottom right corner of preview
     // on click, swap
@@ -29,26 +29,24 @@ export class BroadcastHost extends BroadcastBase {
     this.io = io
 
     this.progressSpinner = initProgressSpinner(
-      document.querySelector('.progress')
+      root.querySelector('.progress')
     )
 
-    this.messageInput = document.querySelector('#broadcast-message')
+    this.messageInput = root.querySelector('#broadcast-message')
 
-    this.sendButton = document.querySelector('#send')
-    this.charCounter = createCharCounter(
-      this.messageInput,
-      document.querySelector('#char-counter'),
-      250
-    )
+    // TODO: bind the tieout buttons
+
+    this.recordButton = root.querySelector('#record-button')
 
     this.awaitingAck = null
     this.sendTime = 0
 
-    this.broadcastForm = document.querySelector('#broadcast-form')
-    this.listenTo(this.broadcastForm, 'submit', this.onSubmitBroadcast)
+    this.broadcastForm = root.querySelector('#broadcast-form')
+    this.listenTo(this.broadcastForm, 'submit', this.onUpdateTitle)
+    this.listenTo(this.broadcastForm, 'submit', this.onUpdateTitle)
 
     this.cameraPreview = createCameraPreview(
-      document.querySelector('#broadcast-preview').parentNode
+      root.querySelector('#broadcast-preview').parentNode
     )
 
     this.autoListen(this.io, [
@@ -64,6 +62,14 @@ export class BroadcastHost extends BroadcastBase {
     this.cameraPreview.destroy()
   }
 
+  onUpdateTitle(event) {
+    event.preventDefault()
+
+    this.io.emit('broadcast', {
+      title: this.messageInput.no
+    })
+  }
+
   onSubmitBroadcast(event) {
     event.preventDefault()
 
@@ -71,7 +77,7 @@ export class BroadcastHost extends BroadcastBase {
 
     const messageText = this.messageInput.value
     this.messageInput.readOnly = true
-    this.sendButton.setAttribute('disabled', true)
+    this.recordButton.setAttribute('disabled', true)
     this.awaitingAck = cuid()
     this.progressSpinner.setValue(0).show()
 
@@ -87,7 +93,7 @@ export class BroadcastHost extends BroadcastBase {
 
       this.messageInput.value = ''
       this.messageInput.readOnly = false
-      this.sendButton.removeAttribute('disabled')
+      this.recordButton.removeAttribute('disabled')
 
       if (err) {
         this.awaitingAck = null

@@ -1,8 +1,11 @@
+include ../../shared/views/icons
+
 include ../../shared/views/video-container.pug
 p
 .message-meta
   .dropdown
     button.toggle.message-overflow(title='Message options')
+      +icon('more_vert')
     .menu.shadow-2
       button(data-action='mute')
   .identicon

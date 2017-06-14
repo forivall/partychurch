@@ -3,9 +3,7 @@ import filmstrip2gif from 'filmstrip2gif'
 import analytics from './analytics'
 import createCameraPreview from './camera-preview'
 import EventSubscriber from './event-subscriber'
-import icons from './icons'
 import localeTime from './locale-time'
-import theme from './theme'
 import {BLANK_IMAGE} from './constants'
 
 const debug = createDebug('partychurch:broadcast')
@@ -14,7 +12,7 @@ const NUM_VIDEO_FRAMES = 10
 const FILMSTRIP_DURATION = 0.92
 const FILMSTRIP_HORIZONTAL = false
 
-export default class BroadcastBase extends EventSubscriber {
+export default class AbstractBroadcast extends EventSubscriber {
   constructor(elem, cameraPreview) {
     super()
 
@@ -33,12 +31,7 @@ export default class BroadcastBase extends EventSubscriber {
     // placeholder div so it can be replaced with the real thing when bound
     this.identicon = this.elem.querySelector('.identicon')
 
-    // generate icons where needed
-    this.saveButton.appendChild(icons.save('invert'))
-
     this.saveButton.addEventListener('click', () => this.saveGif())
-    theme.on('themeChange', this.refreshIdenticon)
-    this.subs.push({destroy() {theme.off('themeChange', this.refreshIdenticon)}})
 
     this.cameraPreview = createCameraPreview(
       document.querySelector('#broadcast-preview').parentNode, cameraPreview
@@ -64,7 +57,6 @@ export default class BroadcastBase extends EventSubscriber {
     this.timestamp.innerHTML = localeTime(sentDate)
 
     this._userId = userId
-    this.refreshIdenticon()
   }
 
   clearVideo() {
