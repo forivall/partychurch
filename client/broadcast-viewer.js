@@ -17,7 +17,7 @@ const FILMSTRIP_DURATION = 0.92
 const FILMSTRIP_HORIZONTAL = false
 
 class BroadcastViewer extends BroadcastAbstract {
-  constructor(elem, cameraPreview) {
+  constructor(elem, io, options) {
     super()
     this.refreshIdenticon.bind(this)
 
@@ -42,12 +42,6 @@ class BroadcastViewer extends BroadcastAbstract {
     this.saveButton.appendChild(icons.save('invert'))
 
     this.saveButton.addEventListener('click', () => this.saveGif())
-    theme.on('themeChange', this.refreshIdenticon)
-    this.subs.push({destroy() {theme.off('themeChange', this.refreshIdenticon)}})
-
-    this.cameraPreview = createCameraPreview(
-      document.querySelector('#broadcast-preview').parentNode, cameraPreview
-    )
   }
 
   onBroadcast(broadcast) {
@@ -170,6 +164,6 @@ function toggle(el, on, attr = 'aria-hidden', value = '') {
 }
 
 
-export default function createBroadcastPane() {
-  return new BroadcastViewer(...arguments)
+export default function createBroadcastPane(...args) {
+  return new BroadcastViewer(...args)
 }

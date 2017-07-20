@@ -47,6 +47,7 @@ export default class EventSubscriber extends EventEmitter {
   listenTo(obj, ev, fn, options) {
     debug('listening to %s', ev)
     let result
+    fn = fn.bind(this)
     if (obj instanceof window.EventTarget) {
       obj.addEventListener(ev, fn, options)
       result = new EventTargetListener(obj, ev, fn, options)

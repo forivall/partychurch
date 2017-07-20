@@ -12,7 +12,7 @@ import initProgressSpinner from './progress'
 const debug = createDebug('partychurch:chat')
 
 export class Chat extends EventSubscriber {
-  constructor(io, notificationCounter, muteSet) {
+  constructor(io, notificationCounter, muteSet, options = {}) {
     super()
 
     const root = document.querySelector('#message-input')
@@ -52,7 +52,8 @@ export class Chat extends EventSubscriber {
     this.listenTo(this.messageForm, 'submit', this.onSubmitMessage)
 
     this.cameraPreview = createCameraPreview(
-      document.querySelector('#preview').parentNode
+      document.querySelector('#preview').parentNode,
+      options.primaryPreview
     )
 
     this.autoListen(this.io, [

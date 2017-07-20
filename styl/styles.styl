@@ -6,6 +6,11 @@
 @import 'typography.styl'
 @import 'colors.styl'
 
+breakpoint-xs = 710px
+breakpoint-sm = 1000px
+breakpoint-md = 1460px
+breakpoint-lg = 2000px
+
 // TODO: convert to semantic ui theme
 butt-on()
   border: 1px solid color-light-button-border
@@ -31,6 +36,8 @@ body
   color: color-light-fg
   width: 100%
   height: 100%
+
+  display: flex
 
   &.dark
     background-color: color-dark-bg
@@ -159,7 +166,6 @@ header
 
 
 main
-  height: 100%
 
   margin: 56px auto 0
   padding: 0
@@ -167,11 +173,10 @@ main
   max-width: 1400px
 
   &.room
-    margin: 56px auto 158px
     display: flex
 
 #broadcast-pane
-  width: 50%
+  flex-grow: 1
 
   .video-container
     width: 100%
@@ -182,24 +187,38 @@ main
     flex-shrink: 0
 
 .broadcast-host-video
+  display: flex
   .preview-container
-    height: auto
-    width: 100%
+    width: 100%;
+    height: auto;
+    max-height: 50vh
   .progress
     position: absolute
 
 #message-pane
-  width: 50%
+  @media (max-width: breakpoint-xs)
+    display: none
+  
+  width: 480px;
+  @media (max-width: breakpoint-md)
+    width: 360px;
+  flex-shrink: 0;
 
 #message-list
   border-radius: 2px
   list-style-type: none
 
+  min-width: 0px
+  margin-bottom: 110px
+
   li
     background-color: color-light-message-bg
     border-bottom: 1px solid color-light-message-separator
     display: flex
+
     font-size: 20px
+    @media (max-width: breakpoint-md)
+      font-size: 14px
     padding: 0px
 
     &:first-child
@@ -212,9 +231,14 @@ main
       overflow: hidden
       border-bottom: none
 
+
     .video-container
       width: 200px
       height: 150px
+      @media (max-width: breakpoint-md)
+        height: 102px
+        width: 136px
+
       margin-bottom: -1px
       position: relative
       overflow: hidden
@@ -244,7 +268,7 @@ main
       align-items: flex-end
       justify-content: space-between
       padding: 0 0 4px
-
+  
 .video-container
   .filmstrip
     display: none
@@ -643,18 +667,12 @@ main
 .dark
   @import 'dark.styl'
 
-@media (max-width: 2000px)
-  #message-list
-    max-width: 892px
-
+@media (max-width: breakpoint-lg)
   #message-input
     max-width: 892px
 
 
-@media (max-width: 1460px)
-  #message-list
-    width: auto
-
+@media (max-width: breakpoint-md)
   #message-input
     width: auto
 
@@ -663,18 +681,7 @@ main
     max-width: 90vw
 
 
-@media (max-width: 1000px)
-  #message-list
-    min-width: 0px
-    margin-bottom: 110px
-
-  #message-list li
-    font-size: 14px
-
-  #message-list li .video-container
-    height: 102px
-    width: 136px
-
+@media (max-width: breakpoint-sm)
   .preview-container
     height: 102px
     width: 136px

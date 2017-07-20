@@ -34,7 +34,7 @@ export default function(video, options, cb) {
     canvas.height = opts.height
     context = canvas.getContext('2d')
 
-    emitter.emit('progress', 0.1)
+    emitter.emit('progress', (1 / opts.numFrames))
     captureFrame()
   }
 

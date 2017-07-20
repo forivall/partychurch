@@ -4,18 +4,16 @@ import createDebug from 'debug'
 import analytics from './analytics'
 import createCameraPreview from './camera-preview'
 import captureFrames from './capture-frames'
-import createCharCounter from './char-counter'
 import initProgressSpinner from './progress'
 
 import AbstractBroadcast from './broadcast-abstract'
 
 const debug = createDebug('partychurch:chat')
-
+ 
 // TODO: finish
 
 export class BroadcastHost extends AbstractBroadcast {
-  constructor(io) {
-    const root = document.querySelector('.broadcast-host-video')
+  constructor(root, io) {
     super(root)
 
     // TODO: show picture in picture of current broadcast in bottom right corner of preview
@@ -34,7 +32,7 @@ export class BroadcastHost extends AbstractBroadcast {
 
     this.messageInput = root.querySelector('#broadcast-message')
 
-    // TODO: bind the tieout buttons
+    // TODO: bind the timeout buttons
 
     this.recordButton = root.querySelector('#record-button')
 
@@ -42,7 +40,6 @@ export class BroadcastHost extends AbstractBroadcast {
     this.sendTime = 0
 
     this.broadcastForm = root.querySelector('#broadcast-form')
-    this.listenTo(this.broadcastForm, 'submit', this.onUpdateTitle)
     this.listenTo(this.broadcastForm, 'submit', this.onUpdateTitle)
 
     this.cameraPreview = createCameraPreview(
@@ -66,7 +63,7 @@ export class BroadcastHost extends AbstractBroadcast {
     event.preventDefault()
 
     this.io.emit('broadcast', {
-      title: this.messageInput.no
+      title: this.messageInput.value
     })
   }
 
@@ -132,6 +129,6 @@ export class BroadcastHost extends AbstractBroadcast {
   }
 }
 
-export default function initBroadcastHost(io) {
-  return new BroadcastHost(io)
+export default function initBroadcastHost(...args) {
+  return new BroadcastHost(...args)
 }

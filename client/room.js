@@ -37,15 +37,21 @@ export class Room extends EventSubscriber {
       this.listenTo(this.io, 'connect', this.join.bind(this))
     }
 
-    this.chat = initChat(this.io, app.notificationCounter, app.muteSet)
+    const bpEl = document.querySelector('#broadcast-pane')
+    if (window.user.isHost) {
+      this.broadcastPane = initBroadcastHost(bpEl, this.io)
+    // } else {
+    //   this.broadcastPane = initBroadcastViewer(bpEl, this.io)
+    }
+
+    this.chat = initChat(this.io, app.notificationCounter, app.muteSet, {
+      primaryPreview: this.broadcastPane.cameraPreview
+    })
 
     // this.broadcastPane = initBroadcastPane(
     //   document.querySelector('#broadcast-pane'),
     //   this.cameraPreview
     // )
-    if (window.user.isHost) {
-      this.broadcastHostPane = initBroadcastHost(this.io)
-    }
   }
 
   destroy() {
