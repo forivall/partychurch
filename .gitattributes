@@ -1,0 +1,6 @@
+# Force unix style line endings for everything
+* text eol=lf
+
+*.ico binary
+*.png binary
+*.ai binary

@@ -1,0 +1,33 @@
+{
+  "name": "partychurch",
+  "version": "0.0.0",
+  "description": "Web-based livestreaming with video chat!",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo 'No tests yet!' && false"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/forivall/partychurch"
+  },
+  "keywords": [
+    "webrtc",
+    "video",
+    "livestream",
+    "chat"
+  ],
+  "author": "Emily Marigold Klassen <forivall@gmail.com> (http://forivall.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/forivall/partychurch/issues"
+  },
+  "homepage": "https://github.com/forivall/partychurch",
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
