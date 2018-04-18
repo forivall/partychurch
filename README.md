@@ -15,8 +15,6 @@ short messages along with a short video of themselves.
 - Send a message to anyone connected to the same partychurch server / room (must include gif)
 - Provides jpeg (filmstrip-style) videos alongside chats
 - No signup required for viewers
-- Allows for muting users based on their ID, removing all their current messages and blocking any
-  future ones
 
 ## Future Features
 
@@ -36,6 +34,11 @@ short messages along with a short video of themselves.
 - Playback is synchronised globally, so that you can have many computers showing the same broadcast
   and it will all be in unison (will need to allow some config for display lag with TVs etc)
 - Forbid users from sending messages without a webcam (configurable by BC)
+- Allows for muting users based on their ID, removing all their current messages and blocking any
+  future ones
+
+### Moderators
+- Mute and ban users
 
 ## Running a server
 
