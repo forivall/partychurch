@@ -1,9 +1,10 @@
 
-var path = require('path')
-var webpack = require('webpack')
+import path = require('path')
+import webpack = require('webpack')
 
-module.exports = {
-  entry: './src/index.ts',
+const config: webpack.Configuration = {
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+  entry: './src/client/index.ts',
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
@@ -30,6 +31,8 @@ module.exports = {
         loader: 'ts-loader',
         exclude: /node_modules/,
         options: {
+          logLevel: 'INFO',
+          configFile: path.resolve(__dirname, './src/client/tsconfig.json'),
           appendTsSuffixTo: [/\.vue$/],
         }
       },
@@ -50,7 +53,6 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    noInfo: true
   },
   performance: {
     hints: false
@@ -59,9 +61,9 @@ module.exports = {
 }
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map'
+  config.devtool = '#source-map'
   // http://vue-loader.vuejs.org/en/workflow/production.html
-  module.exports.plugins = (module.exports.plugins || []).concat([
+  config.plugins = (config.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"'
@@ -78,3 +80,6 @@ if (process.env.NODE_ENV === 'production') {
     })
   ])
 }
+
+
+export default config

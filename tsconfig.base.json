@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "declaration": true,
+    "sourceMap": true,
+    "removeComments": false,
+    "alwaysStrict": true,
+    "importHelpers": true,
+    "noEmitHelpers": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "outDir": "built"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
+

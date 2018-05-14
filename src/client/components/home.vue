@@ -12,7 +12,7 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class HelloDecorator extends Vue {
+export default class HomeController extends Vue {
     @Prop() name!: string;
     @Prop() initialEnthusiasm!: number;
 
