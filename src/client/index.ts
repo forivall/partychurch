@@ -1,9 +1,10 @@
-import Vue from "vue";
+import Vue from 'vue'
 
-import Home from "./components/home.vue";
+import Home from './components/home.vue'
 
+// tslint:disable-next-line no-unused-expression
 new Vue({
-    el: "#app",
+    el: '#app',
     template: `
     <div>
         Name: <input v-model="name" type="text">
@@ -11,8 +12,16 @@ new Vue({
         <Home :name="name" :initialEnthusiasm="5" />
     </div>
     `,
-    data: { name: "World" },
+    data: { name: 'World' },
     components: {
-        Home
-    }
-});
+        Home,
+    },
+})
+
+import * as socketIO from 'socket.io-client'
+
+const io = socketIO()
+
+io.on('connect', () => {
+    console.log('connect')
+})

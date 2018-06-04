@@ -15,7 +15,11 @@
         "interface-name": [
             false
         ],
-        "arrow-parens": false,
+        "semicolon": [
+            true,
+            "never"
+        ],
+        "arrow-parens": true,
         // Pending fix for shorthand property names.
         "object-literal-sort-keys": false
     },
